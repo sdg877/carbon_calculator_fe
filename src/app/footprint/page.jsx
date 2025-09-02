@@ -1,151 +1,367 @@
 "use client";
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import "../../styles/forms.css";
 
-const activityFields = {
-  flight: [{ label: "Flight Type", name: "flight_type", type: "select", options: ["short", "long"] }],
-  driving: [
-    { label: "Commute Distance", name: "commute", type: "select", options: ["short", "medium", "long"] },
-    { label: "Fuel Type", name: "fuel_type", type: "select", options: ["petrol", "diesel"] },
-  ],
-  train: [{ label: "Commute Distance", name: "commute", type: "select", options: ["short", "medium", "long"] }],
-  tube: [{ label: "Commute Distance", name: "commute", type: "select", options: ["short", "medium", "long"] }],
-  bus: [{ label: "Commute Distance", name: "commute", type: "select", options: ["short", "medium", "long"] }],
-  meat: [
-    { label: "Type of Meat", name: "type", type: "select", options: ["beef", "lamb", "pork", "chicken", "fish"] },
-    { label: "Servings per Week", name: "servings_per_week", type: "number" },
-  ],
-  dairy: [
-    { label: "Type of Dairy", name: "type", type: "select", options: ["milk", "cheese", "butter", "yoghurt"] },
-    { label: "Servings per Week", name: "servings_per_week", type: "number" },
-  ],
-  food_waste: [
-    { label: "Frequency", name: "frequency", type: "select", options: ["rare", "weekly"] },
-  ],
-  electricity_use: [{ label: "kWh per Month", name: "kwh_per_month", type: "number" }],
-  gas_use: [{ label: "kWh per Month", name: "kwh_per_month", type: "number" }],
-  water_use: [{ label: "Litres per Day", name: "litres_per_day", type: "number" }],
-  plastic_waste: [{ label: "Bags per Week", name: "bags_per_week", type: "number" }],
-  general_waste: [{ label: "Kg per Week", name: "kg_per_week", type: "number" }],
-  recycling: [{ label: "Percent Recycled", name: "percent", type: "number" }],
-  streaming: [{ label: "Hours per Week", name: "hours_per_week", type: "number" }],
-  gaming: [{ label: "Hours per Week", name: "hours_per_week", type: "number" }],
-  events: [{ label: "Events per Year", name: "per_year", type: "number" }],
-  hotel_stays: [{ label: "Nights per Year", name: "nights_per_year", type: "number" }],
-};
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export default function FootprintPage() {
+export default function CarbonFootprintForm() {
   const [activityType, setActivityType] = useState("");
-  const [formData, setFormData] = useState({});
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
+  const [details, setDetails] = useState({});
+  const [carbonResult, setCarbonResult] = useState(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const router = useRouter();
 
-  useEffect(() => {
-    setFormData({});
-    setResult(null);
-    setError(null);
-  }, [activityType]);
-
-  const handleChange = (e) => {
+  const handleDetailsChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setDetails(prevDetails => ({ ...prevDetails, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-    setResult(null);
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setError("You must be logged in.");
-      return;
-    }
+    setError("");
+    setSuccess("");
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/footprints/`, {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        router.push("/login");
+        return;
+      }
+
+      const res = await fetch(`${API_URL}/footprints`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify({ activity_type: activityType, details: formData }),
+        body: JSON.stringify({ activity_type: activityType, details })
       });
 
       if (!res.ok) {
-        const err = await res.json();
-        setError(err.detail || "Failed to submit");
+        const data = await res.json();
+        setError(data.detail || "Calculation failed");
         return;
       }
 
       const data = await res.json();
-      setResult(data);
+      setCarbonResult(data.carbon_kg);
+      setSuccess(`Carbon Footprint Added! The activity was ${activityType.replace(/_/g, ' ')}.`);
+      
+      setActivityType("");
+      setDetails({});
+
     } catch (err) {
+      setError("Server error, please try again");
       console.error(err);
-      setError("An error occurred");
     }
   };
 
   return (
-    <div className="footprint-container">
-      <h1>Add Carbon Activity</h1>
+    <div className="carbon-form-container">
+      <h1>Track Your Carbon Footprint</h1>
+      <div className="journey-index">
+        <h3>Journey Definitions</h3>
+        <p>A **short** journey is less than 16km.</p>
+        <p>A **medium** journey is 16-32km.</p>
+        <p>A **long** journey is greater than 32km.</p>
+      </div>
 
-      <label>Activity Type:</label>
-      <select value={activityType} onChange={(e) => setActivityType(e.target.value)}>
-        <option value="">Select activity</option>
-        {Object.keys(activityFields).map((act) => (
-          <option key={act} value={act}>
-            {act.replace("_", " ")}
-          </option>
-        ))}
-      </select>
+      <form onSubmit={handleSubmit} className="carbon-form">
+        {error && <p className="error">{error}</p>}
+        {success && <p className="success">{success}</p>}
+        
+        <label>Activity Type:</label>
+        <select
+          value={activityType}
+          onChange={(e) => setActivityType(e.target.value)}
+          required
+        >
+          <option value="">Select an activity</option>
+          <option value="flight">Flight</option>
+          <option value="driving">Driving</option>
+          <option value="train">Train</option>
+          <option value="tube">Tube</option>
+          <option value="bus">Bus</option>
+          <option value="meat">Meat</option>
+          <option value="dairy">Dairy</option>
+          <option value="food_waste">Food Waste</option>
+          <option value="clothing">Clothing</option>
+          <option value="electronics">Electronics</option>
+          <option value="online_shopping">Online Shopping</option>
+          <option value="electricity_use">Electricity Use</option>
+          <option value="gas_use">Gas Use</option>
+          <option value="water_use">Water Use</option>
+          <option value="plastic_waste">Plastic Waste</option>
+          <option value="general_waste">General Waste</option>
+          <option value="recycling">Recycling</option>
+          <option value="streaming">Streaming</option>
+          <option value="gaming">Gaming</option>
+          <option value="events">Events</option>
+          <option value="hotel_stays">Hotel Stays</option>
+        </select>
 
-      {activityType && (
-        <form onSubmit={handleSubmit}>
-          {activityFields[activityType].map((field) => (
-            <div key={field.name} className="form-group">
-              <label>{field.label}:</label>
-              {field.type === "select" ? (
-                <select name={field.name} onChange={handleChange} required>
-                  <option value="">Select</option>
-                  {field.options.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
-                  ))}
+        {/* Dynamic form fields based on activityType */}
+        {(activityType === "driving" || activityType === "train" || activityType === "tube" || activityType === "bus") && (
+          <div className="dynamic-fields">
+            <label>Commute Type:</label>
+            <select name="commute" value={details.commute || ""} onChange={handleDetailsChange}>
+              <option value="short">Short</option>
+              <option value="medium">Medium</option>
+              <option value="long">Long</option>
+            </select>
+            {activityType === "driving" && (
+              <>
+                <label>Fuel Type:</label>
+                <select name="fuel_type" value={details.fuel_type || ""} onChange={handleDetailsChange}>
+                  <option value="petrol">Petrol</option>
+                  <option value="other">Other</option>
                 </select>
-              ) : (
-                <input
-                  type={field.type}
-                  name={field.name}
-                  onChange={handleChange}
-                  required
-                />
-              )}
-            </div>
-          ))}
-          <button type="submit">Add Activity</button>
-        </form>
-      )}
+              </>
+            )}
+          </div>
+        )}
+        
+        {activityType === "online_shopping" && (
+          <div className="dynamic-fields">
+            <label>Orders per Month:</label>
+            <input
+              type="number"
+              name="orders_per_month"
+              value={details.orders_per_month || ""}
+              onChange={handleDetailsChange}
+              required
+            />
+            <label>Returns per Month:</label>
+            <input
+              type="number"
+              name="returns_per_month"
+              value={details.returns_per_month || ""}
+              onChange={handleDetailsChange}
+              required
+            />
+          </div>
+        )}
+        
+        {activityType === "flight" && (
+          <div className="dynamic-fields">
+            <label>Flight Type:</label>
+            <select name="flight_type" value={details.flight_type || ""} onChange={handleDetailsChange}>
+              <option value="short">Short</option>
+              <option value="long">Long</option>
+            </select>
+          </div>
+        )}
+        
+        {activityType === "meat" && (
+          <div className="dynamic-fields">
+            <label>Meat Type:</label>
+            <select name="type" value={details.type || ""} onChange={handleDetailsChange}>
+              <option value="beef">Beef</option>
+              <option value="lamb">Lamb</option>
+              <option value="pork">Pork</option>
+              <option value="chicken">Chicken</option>
+              <option value="fish">Fish</option>
+            </select>
+            <label>Servings per Week:</label>
+            <input
+              type="number"
+              name="servings_per_week"
+              value={details.servings_per_week || ""}
+              onChange={handleDetailsChange}
+              required
+            />
+          </div>
+        )}
+        
+        {activityType === "dairy" && (
+          <div className="dynamic-fields">
+            <label>Dairy Type:</label>
+            <select name="type" value={details.type || ""} onChange={handleDetailsChange}>
+              <option value="milk">Milk</option>
+              <option value="cheese">Cheese</option>
+              <option value="butter">Butter</option>
+              <option value="yoghurt">Yoghurt</option>
+            </select>
+            <label>Servings per Week:</label>
+            <input
+              type="number"
+              name="servings_per_week"
+              value={details.servings_per_week || ""}
+              onChange={handleDetailsChange}
+              required
+            />
+          </div>
+        )}
+        
+        {activityType === "food_waste" && (
+          <div className="dynamic-fields">
+            <label>Frequency:</label>
+            <select name="frequency" value={details.frequency || ""} onChange={handleDetailsChange}>
+              <option value="rare">Rare</option>
+              <option value="weekly">Weekly</option>
+            </select>
+          </div>
+        )}
+        
+        {activityType === "clothing" && (
+          <div className="dynamic-fields">
+            <label>Frequency:</label>
+            <select name="frequency" value={details.frequency || ""} onChange={handleDetailsChange}>
+              <option value="monthly">Monthly</option>
+              <option value="weekly">Weekly</option>
+            </select>
+          </div>
+        )}
+        
+        {activityType === "electronics" && (
+          <div className="dynamic-fields">
+            <label>Frequency:</label>
+            <select name="frequency" value={details.frequency || ""} onChange={handleDetailsChange}>
+              <option value="rare">Rare</option>
+              <option value="frequent">Frequent</option>
+            </select>
+          </div>
+        )}
+        
+        {activityType === "electricity_use" && (
+          <div className="dynamic-fields">
+            <label>KWH per Month:</label>
+            <input
+              type="number"
+              name="kwh_per_month"
+              value={details.kwh_per_month || ""}
+              onChange={handleDetailsChange}
+              required
+            />
+          </div>
+        )}
+        
+        {activityType === "gas_use" && (
+          <div className="dynamic-fields">
+            <label>KWH per Month:</label>
+            <input
+              type="number"
+              name="kwh_per_month"
+              value={details.kwh_per_month || ""}
+              onChange={handleDetailsChange}
+              required
+            />
+          </div>
+        )}
+        
+        {activityType === "water_use" && (
+          <div className="dynamic-fields">
+            <label>Litres per Day:</label>
+            <input
+              type="number"
+              name="litres_per_day"
+              value={details.litres_per_day || ""}
+              onChange={handleDetailsChange}
+              required
+            />
+          </div>
+        )}
+        
+        {activityType === "plastic_waste" && (
+          <div className="dynamic-fields">
+            <label>Bags per Week:</label>
+            <input
+              type="number"
+              name="bags_per_week"
+              value={details.bags_per_week || ""}
+              onChange={handleDetailsChange}
+              required
+            />
+          </div>
+        )}
+        
+        {activityType === "general_waste" && (
+          <div className="dynamic-fields">
+            <label>KG per Week:</label>
+            <input
+              type="number"
+              name="kg_per_week"
+              value={details.kg_per_week || ""}
+              onChange={handleDetailsChange}
+              required
+            />
+          </div>
+        )}
+        
+        {activityType === "recycling" && (
+          <div className="dynamic-fields">
+            <label>Recycling Percentage:</label>
+            <input
+              type="number"
+              name="percent"
+              value={details.percent || ""}
+              onChange={handleDetailsChange}
+              required
+            />
+          </div>
+        )}
+        
+        {activityType === "streaming" && (
+          <div className="dynamic-fields">
+            <label>Hours per Week:</label>
+            <input
+              type="number"
+              name="hours_per_week"
+              value={details.hours_per_week || ""}
+              onChange={handleDetailsChange}
+              required
+            />
+          </div>
+        )}
+        
+        {activityType === "gaming" && (
+          <div className="dynamic-fields">
+            <label>Hours per Week:</label>
+            <input
+              type="number"
+              name="hours_per_week"
+              value={details.hours_per_week || ""}
+              onChange={handleDetailsChange}
+              required
+            />
+          </div>
+        )}
+        
+        {activityType === "events" && (
+          <div className="dynamic-fields">
+            <label>Events per Year:</label>
+            <input
+              type="number"
+              name="per_year"
+              value={details.per_year || ""}
+              onChange={handleDetailsChange}
+              required
+            />
+          </div>
+        )}
+        
+        {activityType === "hotel_stays" && (
+          <div className="dynamic-fields">
+            <label>Nights per Year:</label>
+            <input
+              type="number"
+              name="nights_per_year"
+              value={details.nights_per_year || ""}
+              onChange={handleDetailsChange}
+              required
+            />
+          </div>
+        )}
 
-      {error && <div className="error">{error}</div>}
-
-      {result && (
+        <button type="submit">Calculate Footprint</button>
+      </form>
+      
+      {carbonResult !== null && (
         <div className="result">
-          <h2>Carbon Footprint Added!</h2>
-          <p>Activity Type: {result.activity_type}</p>
-          <p>Carbon kg: {result.carbon_kg}</p>
-          {result.suggestions && (
-            <div>
-              <h3>Offset Suggestions:</h3>
-              <ul>
-                {result.suggestions.map((s, i) => (
-                  <li key={i}>{s.title || s}</li>
-                ))}
-              </ul>
-            </div>
-          )}
+          <h2>Your Carbon Footprint</h2>
+          <p>This activity added **{carbonResult} kg CO₂** to your footprint.</p>
         </div>
       )}
     </div>
