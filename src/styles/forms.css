@@ -36,3 +36,51 @@
   color: red;
   margin-bottom: 1rem;
 }
+
+.footprint-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.footprint-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.error {
+  margin-top: 20px;
+  color: red;
+}
+
+.result {
+  margin-top: 20px;
+  padding: 15px;
+  background: #e6ffe6;
+  border: 1px solid #b2ffb2;
+  border-radius: 5px;
+}
