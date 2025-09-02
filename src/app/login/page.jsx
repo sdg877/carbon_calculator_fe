@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation"; 
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter(); 
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,14 +18,13 @@ export default function LoginPage() {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({
-          username: email, // OAuth2PasswordRequestForm expects `username`
+          username: email,
           password: password,
         }),
       });
 
       if (!res.ok) {
         const errData = await res.json();
-        // FastAPI sometimes returns a list in "detail", sometimes a string
         if (Array.isArray(errData.detail)) {
           setError(errData.detail[0].msg);
         } else {
@@ -35,6 +36,7 @@ export default function LoginPage() {
       const data = await res.json();
       console.log("Logged in:", data);
       localStorage.setItem("token", data.access_token);
+      router.push("/dashboard");
     } catch (err) {
       setError("Something went wrong. Please try again.");
     }
