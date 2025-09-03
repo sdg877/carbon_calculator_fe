@@ -76,6 +76,14 @@ export default function ProfilePage() {
         <div className="profile-details">
           <p><strong>Username:</strong> {user.username}</p>
           <p><strong>Email:</strong> {user.email}</p>
+
+          {user.created_at && (
+            <p>
+              <strong>Account Created:</strong>{" "}
+              {new Date(user.created_at).toLocaleString()}
+            </p>
+          )}
+
           {user.last_login_at && (
             <p>
               <strong>Last Login:</strong>{" "}
