@@ -1,5 +1,5 @@
 import { DM_Sans } from 'next/font/google'
-import LogoutButton from '../components/LogoutButton'
+import Navbar from '../components/Navbar'; // 👈 Import the Navbar component
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -17,10 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={dmSans.className}>
         <header>
-          <nav>
-            <h1>Carbon Calculator</h1>
-            <LogoutButton /> 
-          </nav>
+          <Navbar /> 
         </header>
         <main>
           {children}
