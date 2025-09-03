@@ -15,7 +15,7 @@ export default function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setLoggedIn(false);
-    window.location.href = "/login"; // redirect to login
+    window.location.href = "/identity"; 
   };
 
   return (
@@ -28,8 +28,7 @@ export default function Navbar() {
         <li><Link href="/dashboard">Dashboard</Link></li>
         <li><Link href="/footprint">Add Activity</Link></li>
         <li><Link href="/profile">Profile</Link></li>
-        {!loggedIn && <li><Link href="/login">Login</Link></li>}
-        {!loggedIn && <li><Link href="/register">Register</Link></li>}
+        {!loggedIn && <li><Link href="/identity">Login</Link></li>}
         {loggedIn && <li><button onClick={handleLogout}>Logout</button></li>}
       </ul>
     </nav>
