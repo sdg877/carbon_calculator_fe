@@ -1,3 +1,4 @@
+
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -11,6 +12,8 @@ export default function CarbonFootprintForm() {
   const [carbonResult, setCarbonResult] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  
+  const [suggestedOffsets, setSuggestedOffsets] = useState([]);
   const router = useRouter();
 
   const handleDetailsChange = (e) => {
@@ -22,6 +25,7 @@ export default function CarbonFootprintForm() {
     e.preventDefault();
     setError("");
     setSuccess("");
+    setSuggestedOffsets([]);
 
     try {
       const token = localStorage.getItem("token");
@@ -50,6 +54,9 @@ export default function CarbonFootprintForm() {
       setSuccess(
         `Carbon Footprint Added! The activity was ${activityType.replace(/_/g, " ")}.`
       );
+      if (data.suggested_offsets) {
+        setSuggestedOffsets(data.suggested_offsets);
+      }
 
       setActivityType("");
       setDetails({});
@@ -63,18 +70,6 @@ export default function CarbonFootprintForm() {
     <div className="carbon-form-container">
       <h1>Track Your Carbon Footprint</h1>
 
-      <section aria-labelledby="journey-definitions" className="journey-index">
-        <h2 id="journey-definitions">Journey Definitions</h2>
-        <p>
-          A <strong>short</strong> journey is less than 16km.
-        </p>
-        <p>
-          A <strong>medium</strong> journey is 16-32km.
-        </p>
-        <p>
-          A <strong>long</strong> journey is greater than 32km.
-        </p>
-      </section>
 
       <form onSubmit={handleSubmit} className="carbon-form">
         <div aria-live="assertive">
@@ -84,9 +79,23 @@ export default function CarbonFootprintForm() {
             </p>
           )}
           {success && (
-            <p className="success" role="status">
-              {success}
-            </p>
+            <div className="success" role="status">
+              <p>{success}</p>
+              {/* NEW: Conditionally render the suggestions inside the success message */}
+              {suggestedOffsets.length > 0 && (
+                <div>
+                  <p>Here are some ways to help offset your footprint:</p>
+                  <ul>
+                    {suggestedOffsets.map((offset, index) => (
+                      <li key={index}>{offset}</li>
+                    ))}
+                  </ul>
+                  <p>
+                    Have a look at our <a href="/volunteer">volunteer</a> page for live opportunities.
+                  </p>
+                </div>
+              )}
+            </div>
           )}
         </div>
 
@@ -121,7 +130,6 @@ export default function CarbonFootprintForm() {
           <option value="hotel_stays">Hotel Stays</option>
         </select>
 
-        {/* Dynamic fields with accessibility */}
         {(activityType === "driving" ||
           activityType === "train" ||
           activityType === "tube" ||
@@ -260,7 +268,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Remaining activityType fields follow the same accessible pattern */}
         {activityType === "food_waste" && (
           <fieldset>
             <legend>Food Waste</legend>
@@ -466,7 +473,7 @@ export default function CarbonFootprintForm() {
         <div className="result" aria-live="polite">
           <h2>Your Carbon Footprint</h2>
           <p>
-            This activity added <strong>{carbonResult} kg CO₂</strong> to your
+            This activity added **{carbonResult} kg CO₂** to your
             footprint.
           </p>
         </div>
