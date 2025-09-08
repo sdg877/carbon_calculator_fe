@@ -51,9 +51,7 @@ export default function DashboardPage() {
           activity_type: item.activity_type
             .replace(/_/g, " ")
             .replace(/\b\w/g, (l) => l.toUpperCase()),
-          completed_at: item.completed_at
-            ? new Date(item.completed_at).toLocaleDateString()
-            : "Not completed",
+          created_at: new Date(item.created_at).toLocaleDateString("en-GB"),
         }));
         setFootprints(formatted);
       } catch (err) {
@@ -103,7 +101,7 @@ export default function DashboardPage() {
             <ResponsiveContainer width="100%" height={400}>
               <LineChart data={footprints}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="completed_at" />
+                <XAxis dataKey="created_at" />
                 <YAxis />
                 <Tooltip />
                 <Line
