@@ -1,4 +1,3 @@
-
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -12,7 +11,7 @@ export default function CarbonFootprintForm() {
   const [carbonResult, setCarbonResult] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  
+
   const [suggestedOffsets, setSuggestedOffsets] = useState([]);
   const router = useRouter();
 
@@ -52,7 +51,10 @@ export default function CarbonFootprintForm() {
       const data = await res.json();
       setCarbonResult(data.carbon_kg);
       setSuccess(
-        `Carbon Footprint Added! The activity was ${activityType.replace(/_/g, " ")}.`
+        `Carbon Footprint Added! The activity was ${activityType.replace(
+          /_/g,
+          " "
+        )}.`
       );
       if (data.suggested_offsets) {
         setSuggestedOffsets(data.suggested_offsets);
@@ -70,35 +72,15 @@ export default function CarbonFootprintForm() {
     <div className="carbon-form-container">
       <h1>Track Your Carbon Footprint</h1>
 
+      <div aria-live="assertive">
+        {error && (
+          <p className="error" role="alert">
+            {error}
+          </p>
+        )}
+      </div>
 
       <form onSubmit={handleSubmit} className="carbon-form">
-        <div aria-live="assertive">
-          {error && (
-            <p className="error" role="alert">
-              {error}
-            </p>
-          )}
-          {success && (
-            <div className="success" role="status">
-              <p>{success}</p>
-              {/* NEW: Conditionally render the suggestions inside the success message */}
-              {suggestedOffsets.length > 0 && (
-                <div>
-                  <p>Here are some ways to help offset your footprint:</p>
-                  <ul>
-                    {suggestedOffsets.map((offset, index) => (
-                      <li key={index}>{offset}</li>
-                    ))}
-                  </ul>
-                  <p>
-                    Have a look at our <a href="/volunteer">volunteer</a> page for live opportunities.
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
         <label htmlFor="activity-type">Activity Type:</label>
         <select
           id="activity-type"
@@ -135,8 +117,10 @@ export default function CarbonFootprintForm() {
           activityType === "tube" ||
           activityType === "bus") && (
           <fieldset>
-            <legend>{activityType.charAt(0).toUpperCase() + activityType.slice(1)} Details</legend>
-
+            <legend>
+              {activityType.charAt(0).toUpperCase() + activityType.slice(1)}{" "}
+              Details
+            </legend>
             <label htmlFor="commute">Commute Type:</label>
             <select
               id="commute"
@@ -148,7 +132,6 @@ export default function CarbonFootprintForm() {
               <option value="medium">Medium</option>
               <option value="long">Long</option>
             </select>
-
             {activityType === "driving" && (
               <>
                 <label htmlFor="fuel_type">Fuel Type:</label>
@@ -169,7 +152,6 @@ export default function CarbonFootprintForm() {
         {activityType === "online_shopping" && (
           <fieldset>
             <legend>Online Shopping Details</legend>
-
             <label htmlFor="orders_per_month">Orders per Month:</label>
             <input
               type="number"
@@ -179,7 +161,6 @@ export default function CarbonFootprintForm() {
               onChange={handleDetailsChange}
               required
             />
-
             <label htmlFor="returns_per_month">Returns per Month:</label>
             <input
               type="number"
@@ -195,7 +176,6 @@ export default function CarbonFootprintForm() {
         {activityType === "flight" && (
           <fieldset>
             <legend>Flight Details</legend>
-
             <label htmlFor="flight_type">Flight Type:</label>
             <select
               id="flight_type"
@@ -212,7 +192,6 @@ export default function CarbonFootprintForm() {
         {activityType === "meat" && (
           <fieldset>
             <legend>Meat Consumption</legend>
-
             <label htmlFor="meat_type">Meat Type:</label>
             <select
               id="meat_type"
@@ -226,7 +205,6 @@ export default function CarbonFootprintForm() {
               <option value="chicken">Chicken</option>
               <option value="fish">Fish</option>
             </select>
-
             <label htmlFor="meat_servings">Servings per Week:</label>
             <input
               type="number"
@@ -242,7 +220,6 @@ export default function CarbonFootprintForm() {
         {activityType === "dairy" && (
           <fieldset>
             <legend>Dairy Consumption</legend>
-
             <label htmlFor="dairy_type">Dairy Type:</label>
             <select
               id="dairy_type"
@@ -255,7 +232,6 @@ export default function CarbonFootprintForm() {
               <option value="butter">Butter</option>
               <option value="yoghurt">Yoghurt</option>
             </select>
-
             <label htmlFor="dairy_servings">Servings per Week:</label>
             <input
               type="number"
@@ -469,13 +445,32 @@ export default function CarbonFootprintForm() {
         <button type="submit">Calculate Footprint</button>
       </form>
 
+      {/* The main result box, which now contains both the footprint and the success message */}
       {carbonResult !== null && (
         <div className="result" aria-live="polite">
           <h2>Your Carbon Footprint</h2>
           <p>
-            This activity added **{carbonResult} kg CO₂** to your
-            footprint.
+            This activity added **{carbonResult} kg CO₂** to your footprint.
           </p>
+
+          {/* This is the moved success message with the offset suggestions */}
+          <div className="success">
+            <p>{success}</p>
+            {suggestedOffsets.length > 0 && (
+              <div>
+                <p>Here are some ways to help offset your footprint:</p>
+                <ul>
+                  {suggestedOffsets.map((offset, index) => (
+                    <li key={index}>{offset}</li>
+                  ))}
+                </ul>
+                <p>
+                  Have a look at our <a href="/volunteer">volunteer</a> page for
+                  live opportunities.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
