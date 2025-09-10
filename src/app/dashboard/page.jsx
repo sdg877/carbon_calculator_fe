@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   PieChart,
   Pie,
@@ -17,14 +17,55 @@ import {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const COLORS = [
-  "#4caf50",
-  "#2196f3",
-  "#ff9800",
-  "#e91e63",
-  "#9c27b0",
-  "#00bcd4",
+const CATEGORY_COLOURS = {
+  transport: "#6DBF73", 
+  energy: "#4E91D9", 
+  food: "#F5A15A",
+  shopping: "#E57373",
+  waste: "#9B6DD6",
+  other: "#4DD0B2",
+  travel: "#FFB86C", 
+  services: "#64B5F6", 
+  housing: "#81C784",
+  leisure: "#BA68C8",
+  flights: "#FF8A65",
+  commuting: "#AED581",
+};
+
+
+const FALLBACK_COLOURS = [
+  "#A084E8", 
+  "#C3AED6",
+  "#FFD2B8",
+  "#9AE6B4",
+  "#84A0E8",
+  "#FFAB91",
+  "#7DD8C0",
+  "#F5B860",
+  "#E07878",
+  "#A8C8F0",
+  "#D9A8E5",
+  "#FFC973",
+  "#A2D0C1",
+  "#E6A0A0",
+  "#C9B0E0",
+  "#A0C881",
+  "#C6B6D2",
+  "#FFD891",
+  "#82B7D6", 
 ];
+
+const toTitleCase = (str) =>
+  str
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
+const normalise = (raw) =>
+  String(raw || "")
+    .replace(/\s+/g, "_")
+    .trim()
+    .toLowerCase();
 
 export default function DashboardPage() {
   const [footprints, setFootprints] = useState([]);
@@ -48,9 +89,7 @@ export default function DashboardPage() {
         const data = await res.json();
         const formatted = data.map((item) => ({
           ...item,
-          activity_type: item.activity_type
-            .replace(/_/g, " ")
-            .replace(/\b\w/g, (l) => l.toUpperCase()),
+          raw_type: normalise(item.activity_type),
           created_at: new Date(item.created_at).toLocaleDateString("en-GB"),
         }));
         setFootprints(formatted);
@@ -61,6 +100,35 @@ export default function DashboardPage() {
 
     fetchFootprints();
   }, []);
+
+  const aggregatedByCategory = useMemo(() => {
+    const map = {};
+    const categoryColors = { ...CATEGORY_COLOURS };
+    const allCategories = new Set(footprints.map(f => f.raw_type));
+    let fallbackIndex = 0;
+
+    allCategories.forEach(category => {
+      if (!categoryColors[category]) {
+        categoryColors[category] = FALLBACK_COLOURS[fallbackIndex % FALLBACK_COLOURS.length];
+        fallbackIndex++;
+      }
+    });
+
+    for (const row of footprints) {
+      const key = row.raw_type || "other";
+      const value = Number(row.carbon_kg) || 0;
+      if (!map[key]) {
+        map[key] = {
+          raw_type: key,
+          activity_type: toTitleCase(key),
+          carbon_kg: 0,
+          color: categoryColors[key],
+        };
+      }
+      map[key].carbon_kg += value;
+    }
+    return Object.values(map);
+  }, [footprints]);
 
   if (error) return <div className="error">{error}</div>;
 
@@ -75,7 +143,7 @@ export default function DashboardPage() {
             <ResponsiveContainer width="100%" height={400}>
               <PieChart>
                 <Pie
-                  data={footprints}
+                  data={aggregatedByCategory}
                   dataKey="carbon_kg"
                   nameKey="activity_type"
                   cx="50%"
@@ -83,19 +151,29 @@ export default function DashboardPage() {
                   outerRadius={120}
                   label
                 >
-                  {footprints.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
+                  {aggregatedByCategory.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip />
-                <Legend />
+
+                <Tooltip 
+                  formatter={(value, name) => [
+                    `${value.toFixed(2)} Carbon KG`,
+                    toTitleCase(name),
+                  ]} 
+                />
+                <Legend
+                  payload={aggregatedByCategory.map((a) => ({
+                    id: a.raw_type,
+                    value: `${toTitleCase(a.raw_type)} (${a.carbon_kg.toFixed(2)} Carbon KG)`,
+                    type: "square",
+                    color: a.color,
+                  }))}
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>
-
+          
           <div className="chart-card">
             <h2>Carbon Footprint Over Time</h2>
             <ResponsiveContainer width="100%" height={400}>
@@ -107,7 +185,7 @@ export default function DashboardPage() {
                 <Line
                   type="monotone"
                   dataKey="carbon_kg"
-                  stroke="#4caf50"
+                  stroke={CATEGORY_COLOURS.transport}
                   strokeWidth={2}
                   dot={true}
                 />
