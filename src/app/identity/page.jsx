@@ -36,19 +36,30 @@ export default function AuthPage() {
       });
 
       if (!res.ok) {
-        const errData = await res.json();
+        const errData = await res.json().catch(() => ({}));
         const errorMessage = Array.isArray(errData.detail)
           ? errData.detail[0].msg
-          : errData.detail;
-        setLoginError(errorMessage || "Login failed");
+          : errData.detail || "Login failed";
+        setLoginError(errorMessage);
         return;
       }
 
       const data = await res.json();
       localStorage.setItem("token", data.access_token);
+
+      window.dispatchEvent(
+        new CustomEvent("auth", { detail: { loggedIn: true } })
+      );
+      try {
+        localStorage.setItem("__auth_changed_at", Date.now().toString());
+      } catch (err) {
+        // ignore
+      }
+
       router.push("/dashboard");
     } catch (err) {
       setLoginError("Something went wrong. Please try again.");
+      console.error(err);
     }
   };
 
@@ -58,7 +69,6 @@ export default function AuthPage() {
     setRegisterSuccess("");
 
     try {
-      // Register user
       const res = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -70,12 +80,11 @@ export default function AuthPage() {
       });
 
       if (!res.ok) {
-        const data = await res.json();
+        const data = await res.json().catch(() => ({}));
         setRegisterError(data.detail || "Registration failed");
         return;
       }
 
-      // Auto login
       const loginRes = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -86,7 +95,7 @@ export default function AuthPage() {
       });
 
       if (!loginRes.ok) {
-        const errData = await loginRes.json();
+        const errData = await loginRes.json().catch(() => ({}));
         const errorMessage = Array.isArray(errData.detail)
           ? errData.detail[0].msg
           : errData.detail;
@@ -96,10 +105,19 @@ export default function AuthPage() {
 
       const data = await loginRes.json();
       localStorage.setItem("token", data.access_token);
+
+      window.dispatchEvent(
+        new CustomEvent("auth", { detail: { loggedIn: true } })
+      );
+      try {
+        localStorage.setItem("__auth_changed_at", Date.now().toString());
+      } catch (err) {}
+
       setRegisterSuccess("Registration successful! You are now logged in.");
       router.push("/dashboard");
     } catch (err) {
       setRegisterError("Server error, please try again");
+      console.error(err);
     }
   };
 
@@ -156,7 +174,9 @@ export default function AuthPage() {
       )}
       <div className="toggle-button-container">
         <button onClick={() => setIsLogin(!isLogin)}>
-          {isLogin ? "Need an account? Register" : "Already have an account? Login"}
+          {isLogin
+            ? "Need an account? Register"
+            : "Already have an account? Login"}
         </button>
       </div>
     </div>
