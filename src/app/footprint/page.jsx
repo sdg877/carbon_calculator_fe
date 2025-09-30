@@ -62,6 +62,7 @@ export default function CarbonFootprintForm() {
         )}.`
       );
       
+      // 🌟 THIS OPENS THE MODAL 🌟
       setIsModalOpen(true); 
 
       setActivityType("");
@@ -84,6 +85,7 @@ export default function CarbonFootprintForm() {
         )}
       </div>
 
+      {/* Form submit handler with noValidate to prevent stubborn HTML validation */}
       <form onSubmit={handleSubmit} className="carbon-form" noValidate>
         <label htmlFor="activity-type">Activity Type:</label>
         <select
