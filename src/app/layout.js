@@ -1,31 +1,27 @@
-import { DM_Sans } from 'next/font/google'
-import Navbar from '../components/Navbar'
-import AuthWrapper from '../components/AuthWrapper'
+import { Inter } from "next/font/google";
+import "../styles/forms.css";
+import AuthWrapper from "../components/AuthWrapper.js";
+import Navbar from "../components/Navbar.jsx";
+import ModalRoot from "../components/ModalRoot.jsx";
 
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  display: 'swap',
-})
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: 'Carbon Calculator',
-  description: '...',
-}
+  title: "CarbonCalc - Track Your Footprint",
+  description:
+    "A simple application for tracking and offsetting your carbon footprint.",
+};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={dmSans.className}>
-        <header>
+      <body className={inter.className} suppressHydrationWarning={true}>
+        <AuthWrapper>
           <Navbar />
-        </header>
-        <main>
-          <AuthWrapper>
-            {children}
-          </AuthWrapper>
-        </main>
+          <main className="min-h-screen">{children}</main>
+        </AuthWrapper>
+        <ModalRoot />
       </body>
     </html>
-  )
+  );
 }
