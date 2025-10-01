@@ -4,7 +4,6 @@ import styles from "../styles/homepage.css";
 export default function HomePage() {
   return (
     <main className={styles.container}>
-      {/* NEW BLURB SECTION */}
       <section className={styles.blurbSection}>
         <div className={styles.blurbContent}>
           <p className={styles.blurbParagraph}>
