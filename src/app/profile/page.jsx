@@ -74,8 +74,12 @@ export default function ProfilePage() {
       <h1>My Profile</h1>
       {user ? (
         <div className="profile-details">
-          <p><strong>Username:</strong> {user.username}</p>
-          <p><strong>Email:</strong> {user.email}</p>
+          <p>
+            <strong>Username:</strong> {user.username}
+          </p>
+          <p>
+            <strong>Email:</strong> {user.email}
+          </p>
 
           {user.created_at && (
             <p>
