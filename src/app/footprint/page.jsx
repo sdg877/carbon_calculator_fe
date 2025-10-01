@@ -24,8 +24,8 @@ export default function CarbonFootprintForm() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
-    
+    e.preventDefault();
+
     setError("");
     setSuggestedOffsets([]);
     setCarbonResult(null);
@@ -33,11 +33,11 @@ export default function CarbonFootprintForm() {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        router.push("/identity"); 
+        router.push("/identity");
         return;
       }
-      
-      const res = await fetch(`${API_URL}/footprints`, { 
+
+      const res = await fetch(`${API_URL}/footprints`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,9 +61,9 @@ export default function CarbonFootprintForm() {
           " "
         )}.`
       );
-      
+
       // 🌟 THIS OPENS THE MODAL 🌟
-      setIsModalOpen(true); 
+      setIsModalOpen(true);
 
       setActivityType("");
       setDetails({});
@@ -467,14 +467,17 @@ export default function CarbonFootprintForm() {
             />
           </fieldset>
         )}
-        
-        {/* --- END DYNAMIC INPUTS --- */}
 
+        {/* --- END DYNAMIC INPUTS --- */}
 
         <button type="submit">Calculate Footprint</button>
       </form>
 
-      <Modal className="Modal1" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal
+        className="Modal1"
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      >
         <h2>Success!</h2>
         <p>{success}</p>
         {carbonResult && (
