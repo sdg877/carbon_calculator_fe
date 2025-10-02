@@ -1,5 +1,5 @@
 .formContainer {
-  max-width: 400px;
+  max-width: 200px;
   margin: 2rem auto;
   padding: 2rem;
   border: 1px solid #ccc;
@@ -62,13 +62,14 @@ label {
 
 input,
 select {
-  width: 100%;
+  width: 50%;
   padding: 8px;
+  margin: 15px;
   box-sizing: border-box;
 }
 
 button {
-  padding: 10px 20px;
+  padding: 10px 12px;
   cursor: pointer;
   margin-top: 10px;
 }
