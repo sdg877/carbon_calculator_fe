@@ -17,20 +17,19 @@ import {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-/* Strong but not childish palette */
 const CATEGORY_COLOURS = {
-  transport:   "#6DBF73", // soft green
-  energy:      "#4E91D9", // calm blue
-  food:        "#F5A15A", // warm orange
-  shopping:    "#E57373", // muted red
-  waste:       "#9B6DD6", // lavender purple
-  other:       "#4DD0B2", // teal
-  travel:      "#FFB86C", // amber
-  services:    "#64B5F6", // light blue
-  housing:     "#81C784", // green
-  leisure:     "#BA68C8", // violet
-  flights:     "#FF8A65", // coral
-  commuting:   "#AED581", // light olive green
+  transport:   "#6DBF73", 
+  energy:      "#4E91D9", 
+  food:        "#F5A15A", 
+  shopping:    "#E57373", 
+  waste:       "#9B6DD6", 
+  other:       "#4DD0B2", 
+  travel:      "#FFB86C", 
+  services:    "#64B5F6", 
+  housing:     "#81C784", 
+  leisure:     "#BA68C8", 
+  flights:     "#FF8A65",
+  commuting:   "#AED581", 
 };
 
 const normalise = (raw) =>
@@ -78,7 +77,6 @@ export default function DashboardPage() {
     fetchFootprints();
   }, []);
 
-  // Aggregate by raw_type
   const aggregatedByCategory = useMemo(() => {
     const map = {};
     for (const row of footprints) {
