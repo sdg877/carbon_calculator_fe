@@ -39,7 +39,6 @@ const normalise = (raw) =>
     .trim()
     .toLowerCase();
 
-/* Capitalise words for display */
 const toTitleCase = (str) =>
   str.replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1));
 
