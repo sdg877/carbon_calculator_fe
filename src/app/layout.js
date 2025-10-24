@@ -1,10 +1,10 @@
-import { Inter } from "next/font/google";
+import { Roboto_Mono } from "next/font/google";
 import "../styles/forms.css";
 import AuthWrapper from "../components/AuthWrapper.js";
 import Navbar from "../components/Navbar.jsx";
 import ModalRoot from "../components/ModalRoot.jsx";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto_Mono({ subsets: ["latin"] });
 
 export const metadata = {
   title: "CarbonCalc - Track Your Footprint",
@@ -15,7 +15,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className} suppressHydrationWarning={true}>
+      <body className={roboto.className} suppressHydrationWarning={true}>
         <AuthWrapper>
           <Navbar />
           <main className="min-h-screen">{children}</main>
