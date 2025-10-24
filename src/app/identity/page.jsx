@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import "../../styles/forms.css";
+import "../../styles/forms.css"; // Ensure this path is correct
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -121,63 +121,104 @@ export default function AuthPage() {
     }
   };
 
+
   return (
-    <div className="auth-container">
-      {isLogin ? (
-        <form onSubmit={handleLogin} className="login-form">
-          <h1>Login</h1>
-          {loginError && <p className="error">{loginError}</p>}
-          <label>Email:</label>
-          <input
-            type="email"
-            value={loginEmail}
-            onChange={(e) => setLoginEmail(e.target.value)}
-            required
-          />
-          <label>Password:</label>
-          <input
-            type="password"
-            value={loginPassword}
-            onChange={(e) => setLoginPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Login</button>
-        </form>
-      ) : (
-        <form onSubmit={handleRegister} className="register-form">
-          <h1>Register</h1>
-          {registerError && <p className="error">{registerError}</p>}
-          {registerSuccess && <p className="success">{registerSuccess}</p>}
-          <label>Username:</label>
-          <input
-            type="text"
-            value={registerUsername}
-            onChange={(e) => setRegisterUsername(e.target.value)}
-            required
-          />
-          <label>Email:</label>
-          <input
-            type="email"
-            value={registerEmail}
-            onChange={(e) => setRegisterEmail(e.target.value)}
-            required
-          />
-          <label>Password:</label>
-          <input
-            type="password"
-            value={registerPassword}
-            onChange={(e) => setRegisterPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Register</button>
-        </form>
-      )}
-      <div className="toggle-button-container">
-        <button onClick={() => setIsLogin(!isLogin)}>
-          {isLogin
-            ? "Need an account? Register"
-            : "Already have an account? Login"}
-        </button>
+    <div className="auth-page-background">
+      <div className="auth-card">
+        <h1 className="auth-title">CarbonCalc</h1>
+        {isLogin ? (
+          <form onSubmit={handleLogin} className="auth-form login-form">
+            <h2>Login to Your Account</h2>
+            {loginError && <p className="error">{loginError}</p>}
+            <div className="form-group">
+              <label htmlFor="loginEmail">Email:</label>
+              <input
+                id="loginEmail"
+                type="email"
+                value={loginEmail}
+                onChange={(e) => setLoginEmail(e.target.value)}
+                placeholder="email@example.com"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="loginPassword">Password:</label>
+              <input
+                id="loginPassword"
+                type="password"
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
+                placeholder="********"
+                required
+              />
+            </div>
+            <button type="submit" className="primary-button">
+              Login
+            </button>
+            <div className="toggle-container">
+              <p>Don't have an account?</p>
+              <button 
+                type="button" 
+                onClick={() => setIsLogin(false)}
+                className="toggle-button"
+              >
+                Register here
+              </button>
+            </div>
+          </form>
+        ) : (
+          <form onSubmit={handleRegister} className="auth-form register-form">
+            <h2>Create an Account</h2>
+            {registerError && <p className="error">{registerError}</p>}
+            {registerSuccess && <p className="success">{registerSuccess}</p>}
+            <div className="form-group">
+              <label htmlFor="registerUsername">Username:</label>
+              <input
+                id="registerUsername"
+                type="text"
+                value={registerUsername}
+                onChange={(e) => setRegisterUsername(e.target.value)}
+                placeholder="Choose a username"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="registerEmail">Email:</label>
+              <input
+                id="registerEmail"
+                type="email"
+                value={registerEmail}
+                onChange={(e) => setRegisterEmail(e.target.value)}
+                placeholder="email@example.com"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="registerPassword">Password:</label>
+              <input
+                id="registerPassword"
+                type="password"
+                value={registerPassword}
+                onChange={(e) => setRegisterPassword(e.target.value)}
+                placeholder="********"
+                required
+              />
+            </div>
+            <button type="submit" className="primary-button">
+              Register
+            </button>
+            <div className="toggle-container">
+              <p>Already have an account?</p>
+              <button 
+                type="button" 
+                onClick={() => setIsLogin(true)}
+                className="toggle-button"
+              >
+                Login here
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );
