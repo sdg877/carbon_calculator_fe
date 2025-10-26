@@ -1,29 +1,57 @@
 "use client";
 
-import { useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import jwtDecode from "jwt-decode";
 import { useRouter } from "next/navigation";
 
+const AuthContext = createContext();
+
+export function useAuth() {
+  return useContext(AuthContext);
+}
+
 export default function AuthWrapper({ children }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      router.push("/identity");
+      setIsAuthenticated(false);
       return;
     }
 
-    fetch(`${apiUrl}/verify-token`, {
-      headers: { Authorization: `Bearer ${token}` },
-    }).then((res) => {
-      if (res.status === 401) {
-        localStorage.removeItem("token");
-        router.push("/identity");
-      }
-    });
-  }, [router, apiUrl]);
+    try {
+      const decoded = jwtDecode(token);
+      const isExpired = decoded.exp * 1000 < Date.now();
 
-  return children;
+      if (isExpired) {
+        localStorage.removeItem("token");
+        setIsAuthenticated(false);
+        return;
+      }
+
+      setIsAuthenticated(true);
+    } catch (err) {
+      localStorage.removeItem("token");
+      setIsAuthenticated(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleAuthChange = () => {
+      const token = localStorage.getItem("token");
+      setIsAuthenticated(!!token);
+    };
+    window.addEventListener("auth", handleAuthChange);
+
+    return () => window.removeEventListener("auth", handleAuthChange);
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
