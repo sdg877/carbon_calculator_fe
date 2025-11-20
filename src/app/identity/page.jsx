@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import "../../styles/forms.css"; // Ensure this path is correct
+import "../../styles/forms.css";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -121,7 +121,6 @@ export default function AuthPage() {
     }
   };
 
-
   return (
     <div className="auth-page-background">
       <div className="auth-card">
@@ -157,8 +156,8 @@ export default function AuthPage() {
             </button>
             <div className="toggle-container">
               <p>Don't have an account?</p>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => setIsLogin(false)}
                 className="toggle-button"
               >
@@ -209,8 +208,8 @@ export default function AuthPage() {
             </button>
             <div className="toggle-container">
               <p>Already have an account?</p>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => setIsLogin(true)}
                 className="toggle-button"
               >
