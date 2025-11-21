@@ -62,7 +62,6 @@ export default function CarbonFootprintForm() {
         )}.`
       );
 
-      // 🌟 THIS OPENS THE MODAL 🌟
       setIsModalOpen(true);
 
       setActivityType("");
@@ -85,7 +84,6 @@ export default function CarbonFootprintForm() {
         )}
       </div>
 
-      {/* Form submit handler with noValidate to prevent stubborn HTML validation */}
       <form onSubmit={handleSubmit} className="carbon-form" noValidate>
         <label htmlFor="activity-type">Activity Type:</label>
         <select
@@ -118,9 +116,6 @@ export default function CarbonFootprintForm() {
           <option value="hotel_stays">Hotel Stays</option>
         </select>
 
-        {/* --- DYNAMIC INPUTS (FIELDSETS) --- */}
-
-        {/* Driving / Commute Fields */}
         {(activityType === "driving" ||
           activityType === "train" ||
           activityType === "tube" ||
@@ -158,7 +153,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Online Shopping Fields */}
         {activityType === "online_shopping" && (
           <fieldset>
             <legend>Online Shopping Details</legend>
@@ -183,7 +177,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Flight Fields */}
         {activityType === "flight" && (
           <fieldset>
             <legend>Flight Details</legend>
@@ -200,7 +193,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Meat Consumption Fields */}
         {activityType === "meat" && (
           <fieldset>
             <legend>Meat Consumption</legend>
@@ -229,7 +221,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Dairy Consumption Fields */}
         {activityType === "dairy" && (
           <fieldset>
             <legend>Dairy Consumption</legend>
@@ -257,7 +248,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Food Waste Fields */}
         {activityType === "food_waste" && (
           <fieldset>
             <legend>Food Waste</legend>
@@ -274,7 +264,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Clothing Fields */}
         {activityType === "clothing" && (
           <fieldset>
             <legend>Clothing Purchases</legend>
@@ -291,7 +280,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Electronics Fields */}
         {activityType === "electronics" && (
           <fieldset>
             <legend>Electronics Purchases</legend>
@@ -308,7 +296,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Electricity Use Fields */}
         {activityType === "electricity_use" && (
           <fieldset>
             <legend>Electricity Use</legend>
@@ -324,7 +311,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Gas Use Fields */}
         {activityType === "gas_use" && (
           <fieldset>
             <legend>Gas Use</legend>
@@ -340,7 +326,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Water Use Fields */}
         {activityType === "water_use" && (
           <fieldset>
             <legend>Water Use</legend>
@@ -356,7 +341,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Plastic Waste Fields */}
         {activityType === "plastic_waste" && (
           <fieldset>
             <legend>Plastic Waste</legend>
@@ -372,7 +356,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* General Waste Fields */}
         {activityType === "general_waste" && (
           <fieldset>
             <legend>General Waste</legend>
@@ -388,7 +371,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Recycling Fields */}
         {activityType === "recycling" && (
           <fieldset>
             <legend>Recycling</legend>
@@ -404,7 +386,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Streaming Fields */}
         {activityType === "streaming" && (
           <fieldset>
             <legend>Streaming</legend>
@@ -420,7 +401,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Gaming Fields */}
         {activityType === "gaming" && (
           <fieldset>
             <legend>Gaming</legend>
@@ -436,7 +416,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Events Fields */}
         {activityType === "events" && (
           <fieldset>
             <legend>Events</legend>
@@ -452,7 +431,6 @@ export default function CarbonFootprintForm() {
           </fieldset>
         )}
 
-        {/* Hotel Stays Fields */}
         {activityType === "hotel_stays" && (
           <fieldset>
             <legend>Hotel Stays</legend>
@@ -467,8 +445,6 @@ export default function CarbonFootprintForm() {
             />
           </fieldset>
         )}
-
-        {/* --- END DYNAMIC INPUTS --- */}
 
         <button type="submit">Calculate Footprint</button>
       </form>
