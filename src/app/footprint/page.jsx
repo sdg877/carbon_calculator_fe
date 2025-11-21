@@ -469,10 +469,6 @@ export default function CarbonFootprintForm() {
                 <li key={index}>{offset}</li>
               ))}
             </ul>
-            <p>
-              Have a look at our <a href="/volunteer">volunteer</a> page for
-              live opportunities.
-            </p>
           </div>
         )}
       </Modal>
