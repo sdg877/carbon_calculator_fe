@@ -60,7 +60,7 @@ const mapCategory = (raw) => {
 
   if (key.includes("commut")) return "commuting";
 
-  return "other"; // fallback
+  return "other"; 
 };
 
 const toTitleCase = (str) =>
@@ -132,7 +132,6 @@ export default function DashboardPage() {
 
       {footprints.length > 0 ? (
         <>
-          {/* PIE CHART */}
           <div className="chart-card">
             <h2>Carbon Footprint by Activity</h2>
             <ResponsiveContainer width="100%" height={400}>
@@ -149,7 +148,7 @@ export default function DashboardPage() {
                   {aggregatedByCategory.map((entry, i) => (
                     <Cell
                       key={`cell-${i}`}
-                      fill={CATEGORY_COLOURS[entry.raw_type] || "#999999"} // fallback
+                      fill={CATEGORY_COLOURS[entry.raw_type] || "#999999"} 
                     />
                   ))}
                 </Pie>
@@ -167,7 +166,6 @@ export default function DashboardPage() {
             </ResponsiveContainer>
           </div>
 
-          {/* LINE CHART */}
           <div className="chart-card">
             <h2>Carbon Footprint Over Time</h2>
             <ResponsiveContainer width="100%" height={400}>
