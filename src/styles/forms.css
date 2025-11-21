@@ -1,141 +1,156 @@
-
-.auth-page-background {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background-color: #f0f2f5;
-    font-family: 'Arial', sans-serif;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Robot Mono", sans-serif;
+  color: #333;
 }
 
-/* --- The Auth Card (Login/Register Box) --- */
-.auth-card {
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
+.primary-button,
+.carbon-form button[type="submit"] {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #4caf50;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+  margin-top: 10px;
+  width: 100%;
 }
 
-.auth-title {
-    color: #4caf50; 
-    font-size: 2.2rem;
-    margin-bottom: 30px;
-    font-weight: 700;
+.primary-button:hover,
+.carbon-form button[type="submit"]:hover {
+  background-color: #45a049;
 }
 
-/* --- Form Styling --- */
-.auth-form h2 {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 25px;
-    font-weight: 600;
+.primary-button:active,
+.carbon-form button[type="submit"]:active {
+  transform: translateY(1px);
 }
 
-.form-group {
-    margin-bottom: 20px;
-    text-align: left; 
-}
-
-.auth-form label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #555;
-}
-
-.auth-form input {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-sizing: border-box;
-    font-size: 1rem;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.auth-form input:focus {
-    border-color: #4caf50; 
-    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
-    outline: none;
-}
-
-/* --- Buttons --- */
-.primary-button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background-color: #4caf50; /* Primary button colour */
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.1s;
-    margin-top: 10px;
-}
-
-.primary-button:hover {
-    background-color: #45a049;
-}
-
-.primary-button:active {
-    transform: translateY(1px);
-}
-
-/* --- Toggle (Switch) Container --- */
-.toggle-container {
-    margin-top: 25px;
-    text-align: center;
-    border-top: 1px solid #eee;
-    padding-top: 20px;
-}
-
-.toggle-container p {
-    margin-bottom: 5px;
-    color: #777;
-    font-size: 0.95rem;
-}
-
-.toggle-button {
-    background: none;
-    border: none;
-    color: #4caf50; 
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: underline;
-    padding: 0;
-    transition: color 0.2s;
-}
-
-.toggle-button:hover {
-    color: #388e3c; /* Darker green on hover */
-}
-
-/* --- Error/Success Messages --- */
 .error {
-    color: #d32f2f; /* Red for errors */
-    background-color: #fdeaea;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    border: 1px solid #f9bdbd;
-    font-size: 0.9rem;
-    text-align: center;
+  color: #d32f2f;
+  background-color: #fdeaea;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  border: 1px solid #f9bdbd;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
-.success {
-    color: #388e3c; /* Dark green for success */
-    background-color: #e8f5e9;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    border: 1px solid #c8e6c9;
-    font-size: 0.9rem;
-    text-align: center;
+.carbon-form-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+  background-color: #f0f2f5;
 }
 
+.carbon-form-container {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 650px;
+  width: 100%;
+}
+
+.carbon-form-container h1 {
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 25px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.carbon-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.carbon-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+}
+
+.carbon-form input[type="number"],
+.carbon-form select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background-color: #fff;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.carbon-form input:focus,
+.carbon-form select:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+  outline: none;
+}
+
+/* --- Dynamic Fieldset Grouping (for cleaner look) --- */
+
+.carbon-form fieldset {
+  border: 1px solid #cfcfcf;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 0;
+  background-color: #f9f9f9;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.carbon-form fieldset legend {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #4caf50;
+  padding: 0 10px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: centre;
+  align-items: centre;
+  z-index: 9999;
+}
+
+.modal-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
