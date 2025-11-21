@@ -18,19 +18,20 @@ import {
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const CATEGORY_COLOURS = {
-  transport:   "#6DBF73", 
-  energy:      "#4E91D9", 
-  food:        "#F5A15A", 
-  shopping:    "#E57373", 
-  waste:       "#9B6DD6", 
-  other:       "#4DD0B2", 
-  travel:      "#FFB86C", 
-  services:    "#64B5F6", 
-  housing:     "#81C784", 
-  leisure:     "#BA68C8", 
+  transport:   "#6DBF73",
+  energy:      "#4E91D9",
+  food:        "#F5A15A",
+  shopping:    "#E57373",
+  waste:       "#9B6DD6",
+  other:       "#4DD0B2",
+  travel:      "#FFB86C",
+  services:    "#64B5F6",
+  housing:     "#81C784",
+  leisure:     "#BA68C8",
   flights:     "#FF8A65",
-  commuting:   "#AED581", 
+  commuting:   "#AED581",
 };
+
 
 const normalise = (raw) =>
   String(raw || "")
@@ -38,6 +39,29 @@ const normalise = (raw) =>
     .replace(/\s+/g, " ")
     .trim()
     .toLowerCase();
+
+const mapCategory = (raw) => {
+  const key = raw.toLowerCase();
+
+  if (key.includes("transport")) return "transport";
+  if (key.includes("car")) return "transport";
+  if (key.includes("bus")) return "transport";
+  if (key.includes("train")) return "transport";
+
+  if (key.includes("energy") || key.includes("electricity")) return "energy";
+
+  if (key.includes("food") || key.includes("diet")) return "food";
+
+  if (key.includes("shop")) return "shopping";
+
+  if (key.includes("waste") || key.includes("recycle")) return "waste";
+
+  if (key.includes("flight") || key.includes("plane")) return "flights";
+
+  if (key.includes("commut")) return "commuting";
+
+  return "other"; // fallback
+};
 
 const toTitleCase = (str) =>
   str.replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1));
@@ -62,11 +86,18 @@ export default function DashboardPage() {
         if (!res.ok) throw new Error("Failed to fetch footprints");
 
         const data = await res.json();
-        const formatted = data.map((item) => ({
-          ...item,
-          raw_type: normalise(item.activity_type),
-          created_at: new Date(item.created_at).toLocaleDateString("en-GB"),
-        }));
+
+        const formatted = data.map((item) => {
+          const raw = normalise(item.activity_type);
+          const mapped = mapCategory(raw);
+          return {
+            ...item,
+            raw_type: mapped,
+            activity_type: toTitleCase(mapped),
+            created_at: new Date(item.created_at).toLocaleDateString("en-GB"),
+          };
+        });
+
         setFootprints(formatted);
       } catch (err) {
         setError(err.message);
@@ -81,24 +112,16 @@ export default function DashboardPage() {
     for (const row of footprints) {
       const key = row.raw_type || "other";
       const value = Number(row.carbon_kg) || 0;
-      if (!map[key])
+      if (!map[key]) {
         map[key] = {
           raw_type: key,
           activity_type: toTitleCase(key),
           carbon_kg: 0,
         };
+      }
       map[key].carbon_kg += value;
     }
     return Object.values(map);
-  }, [footprints]);
-
-  useEffect(() => {
-    if (footprints.length > 0) {
-      console.log(
-        "Categories in data:",
-        [...new Set(footprints.map((f) => f.raw_type))]
-      );
-    }
   }, [footprints]);
 
   if (error) return <div className="error">{error}</div>;
@@ -109,6 +132,7 @@ export default function DashboardPage() {
 
       {footprints.length > 0 ? (
         <>
+          {/* PIE CHART */}
           <div className="chart-card">
             <h2>Carbon Footprint by Activity</h2>
             <ResponsiveContainer width="100%" height={400}>
@@ -122,10 +146,10 @@ export default function DashboardPage() {
                   outerRadius={120}
                   label
                 >
-                  {aggregatedByCategory.map((entry, index) => (
+                  {aggregatedByCategory.map((entry, i) => (
                     <Cell
-                      key={`cell-${index}`}
-                      fill={CATEGORY_COLOURS[entry.raw_type]}
+                      key={`cell-${i}`}
+                      fill={CATEGORY_COLOURS[entry.raw_type] || "#999999"} // fallback
                     />
                   ))}
                 </Pie>
@@ -136,13 +160,14 @@ export default function DashboardPage() {
                     id: a.raw_type,
                     value: `${a.activity_type} (${a.carbon_kg.toFixed(2)} kg)`,
                     type: "square",
-                    color: CATEGORY_COLOURS[a.raw_type],
+                    color: CATEGORY_COLOURS[a.raw_type] || "#999999",
                   }))}
                 />
               </PieChart>
             </ResponsiveContainer>
           </div>
 
+          {/* LINE CHART */}
           <div className="chart-card">
             <h2>Carbon Footprint Over Time</h2>
             <ResponsiveContainer width="100%" height={400}>
