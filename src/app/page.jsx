@@ -24,11 +24,11 @@ export default function HomePage() {
       <h1 className={styles.title}>Carbon Calculator</h1>
 
       <section className={styles.globalStatsSection}>
-          <h2>📊 Community Footprint Snapshot</h2>
+          <h2>Community Footprint Snapshot</h2>
           
           <div className={styles.statsSummary}>
               <p>
-                  Our users have collectively tracked **{formatNumber(TOTAL_COMMUNITY_CO2)} kg of CO<sub>2</sub>** this month.
+                  Our users have collectively tracked {formatNumber(TOTAL_COMMUNITY_CO2)} kg of CO<sub>2</sub> this month.
               </p>
               <p>
                   Here is the estimated **average** breakdown of an individual's footprint:
@@ -67,7 +67,6 @@ export default function HomePage() {
                     />
                 </PieChart>
               </ResponsiveContainer>
-              {/* --- END CHART --- */}
           </div>
       </section>
 
