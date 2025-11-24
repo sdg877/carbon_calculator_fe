@@ -1,10 +1,75 @@
+'use client'; 
+
 import React from "react";
 import styles from "../styles/homepage.css";
+
+import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts"; 
+
+const GLOBAL_AVERAGE_DATA = [
+    { name: 'Transport', value: 35, colour: '#6DBF73', description: 'Cars, buses, and trains' },
+    { name: 'Energy/Housing', value: 25, colour: '#4E91D9', description: 'Heating and electricity use' },
+    { name: 'Food/Diet', value: 20, colour: '#F5A15A', description: 'Meat, dairy, and produce impact' },
+    { name: 'Shopping/Goods', value: 15, colour: '#E57373', description: 'Purchases and consumption' },
+    { name: 'Other/Waste', value: 5, colour: '#9B6DD6', description: 'Waste and miscellaneous' },
+];
+
+const TOTAL_COMMUNITY_CO2 = 125000;
+
+const formatNumber = (num) => num.toLocaleString('en-GB');
+
 
 export default function HomePage() {
   return (
     <main className={styles.container}>
       <h1 className={styles.title}>Carbon Calculator</h1>
+
+      <section className={styles.globalStatsSection}>
+          <h2>📊 Community Footprint Snapshot</h2>
+          
+          <div className={styles.statsSummary}>
+              <p>
+                  Our users have collectively tracked **{formatNumber(TOTAL_COMMUNITY_CO2)} kg of CO<sub>2</sub>** this month.
+              </p>
+              <p>
+                  Here is the estimated **average** breakdown of an individual's footprint:
+              </p>
+          </div>
+
+          <div className={styles.pieChartContainer}>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                    <Pie
+                      data={GLOBAL_AVERAGE_DATA}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      innerRadius={50} 
+                      paddingAngle={2}
+                    >
+                      {GLOBAL_AVERAGE_DATA.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.colour} />
+                      ))}
+                    </Pie>
+
+                    <Legend
+                        layout="vertical"
+                        verticalAlign="middle"
+                        align="right"
+                        wrapperStyle={{ paddingLeft: '20px' }}
+                        payload={GLOBAL_AVERAGE_DATA.map((a) => ({
+                            id: a.name,
+                            value: `${a.name} (${a.value}%)`,
+                            type: 'square',
+                            color: a.colour,
+                        }))}
+                    />
+                </PieChart>
+              </ResponsiveContainer>
+              {/* --- END CHART --- */}
+          </div>
+      </section>
 
       <section className={styles.introductionSection}>
         <p className={styles.paragraph}>
@@ -33,7 +98,7 @@ export default function HomePage() {
             journey, where every small step adds up. Our website is a fun, easy
             way to start. Track your carbon footprint, discover unique ways to
             offset your emissions, and even find live volunteering gigs near
-            you. It's about **progress, not perfection**.
+            you. It's about progress, not perfection.
           </p>
         </div>
       </section>
