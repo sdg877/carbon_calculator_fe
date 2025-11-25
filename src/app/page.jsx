@@ -1,8 +1,46 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../styles/homepage.module.css";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+
+async function fetchEnvironmentalNews() {
+  const API_KEY = process.env.NEXT_PUBLIC_NEWS_API_KEY;
+
+  if (!API_KEY) {
+    console.error("News API key is missing. Check your .env.local file.");
+    return [];
+  }
+
+  const relevantQuery =
+    "(climate OR environment OR sustainability OR ecology) AND NOT (crime OR police OR finance OR drug OR court)";
+
+  const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
+    relevantQuery
+  )}&language=en&sortBy=publishedAt&pageSize=20&apiKey=${API_KEY}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error(`API call failed with status: ${response.status}`);
+      return [];
+    }
+    const data = await response.json();
+
+    const filteredArticles = data.articles.filter(
+      (article) =>
+        article.title &&
+        article.urlToImage &&
+        !article.urlToImage.includes("logo") &&
+        !article.urlToImage.includes("placeholder")
+    );
+
+    return filteredArticles.slice(0, 8);
+  } catch (error) {
+    console.error("Error fetching news:", error);
+    return [];
+  }
+}
 
 const GLOBAL_AVERAGE_DATA = [
   {
@@ -42,6 +80,28 @@ const TOTAL_COMMUNITY_CO2 = 125000;
 const AUTH_PAGE_PATH = "/auth/login";
 
 export default function HomePage() {
+  const [newsArticles, setNewsArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadNews() {
+      const articles = await fetchEnvironmentalNews();
+      setNewsArticles(articles);
+      setIsLoading(false);
+    }
+    loadNews();
+  }, []);
+
+  const formatPublishedAt = (isoDate) => {
+    if (!isoDate) return "Unknown date";
+    const date = new Date(isoDate);
+    return date.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
   return (
     <main className={styles.landingContainer}>
       <h1 className={styles.landingTitle}>
@@ -83,7 +143,6 @@ export default function HomePage() {
           </h2>
 
           <div className={styles.chartAndKeyWrapper}>
-            {/* Pie Chart */}
             <div className={styles.chartArea}>
               <ResponsiveContainer width="100%" height={200}>
                 <PieChart>
@@ -97,6 +156,7 @@ export default function HomePage() {
                     innerRadius={40}
                     paddingAngle={2}
                   >
+                    {/* FIX: Corrected variable name from GLOBAL_AVERVE_DATA to GLOBAL_AVERAGE_DATA */}
                     {GLOBAL_AVERAGE_DATA.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.colour} />
                     ))}
@@ -124,7 +184,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* --- SECTION 2: PHILOSOPHY CARD --- */}
       <section className={styles.philosophySection}>
         <div className={styles.philosophyCard}>
           <h3 className={styles.cardTitle}>
@@ -140,6 +199,70 @@ export default function HomePage() {
             footprint, discover unique ways to offset your emissions, and even
             find live volunteering gigs near you.
           </p>
+        </div>
+      </section>
+
+      {/* --- SECTION 3: ENVIRONMENTAL NEWS FEED (Dynamic Content) --- */}
+      <section className={styles.newsFeedSection}>
+        <div className={styles.newsFeedCard}>
+          <h3 className={styles.cardTitle}>
+            Environmental News from Around the World
+          </h3>
+
+          {isLoading && <p>Loading the latest environmental news...</p>}
+
+          {!isLoading && newsArticles.length === 0 && (
+            <p>
+              Sorry, we couldn't load any news articles right now. Please ensure
+              your API key is correct in `.env.local`.
+            </p>
+          )}
+
+          <div className={styles.newsGrid}>
+            {newsArticles.map((article) => (
+              <a
+                key={article.url}
+                href={article.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.newsItemLink}
+              >
+                <div className={styles.newsItem}>
+                  {article.urlToImage && (
+                    <img
+                      src={article.urlToImage}
+                      alt={article.title || "News article image"}
+                      className={styles.newsImage}
+                    />
+                  )}
+                  <div className={styles.newsContent}>
+                    <p className={styles.newsTitle}>{article.title}</p>
+                    <p className={styles.newsSource}>
+                      {article.source.name || "Unknown"} |{" "}
+                      {formatPublishedAt(article.publishedAt)}
+                    </p>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {newsArticles.length > 0 && (
+            <>
+              <p className={styles.externalLinkDisclaimer}>
+                *Please note: Clicking news headlines will take you to external
+                websites.
+              </p>
+              <a
+                href="https://newsapi.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.viewMoreLink}
+              >
+                Powered by NewsAPI.org - View More News →
+              </a>
+            </>
+          )}
         </div>
       </section>
     </main>
