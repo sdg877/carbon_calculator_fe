@@ -1,11 +1,11 @@
 .landingContainer {
-  max-width: 1000px; 
+  max-width: 1000px;
   margin: 0 auto;
   padding: 2rem;
-  background-color: #f7f7f7; 
+  background-color: #f7f7f7;
   min-height: 100vh;
-  font-family: var(--font-dm-sans, sans-serif); 
-  color: #333; 
+  font-family: var(--font-dm-sans, sans-serif);
+  color: #333;
 }
 
 .landingTitle {
@@ -17,15 +17,14 @@
 }
 
 
-.infoCard, .chartCard, .philosophyCard {
+.infoCard, .chartCard, .philosophyCard, .newsFeedCard {
   background: #ffffff;
-  border-radius: 16px; 
+  border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); 
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
 }
 
 .cardTitle {
-   text-align: center; 
   font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 1rem;
@@ -33,7 +32,6 @@
 }
 
 .paragraph {
-   text-align: center; 
   font-size: 1.05rem;
   line-height: 1.7;
   margin-bottom: 1rem;
@@ -43,9 +41,9 @@
 
 .mainContentSection {
     display: grid;
-    /* FIX: Set columns to equal size */
-    grid-template-columns: 1fr 1fr; 
-    gap: 2rem; 
+    /* Equal columns */
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
     margin-bottom: 2.5rem;
 }
 
@@ -64,17 +62,17 @@
 }
 
 .ctaButton {
-    display: block; 
+    display: block;
     width: 100%;
     padding: 1rem;
-    background-color: #CD5B68; 
+    background-color: #CD5B68;
     color: #fff;
     text-align: center;
     text-decoration: none;
     font-weight: 700;
     border-radius: 8px;
     transition: background-color 0.2s ease;
-    border: none; 
+    border: none;
     cursor: pointer;
 }
 
@@ -83,48 +81,48 @@
 }
 
 .chartCard {
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    text-align: center; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .chartAndKeyWrapper {
     display: flex;
-    justify-content: center; /* Ensures chart and key are centred within the card */
-    align-items: center; 
-    gap: 1rem; 
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
     margin-bottom: 1rem;
 }
 
 .chartArea {
-    flex: 2; 
-    min-width: 145px; 
+    flex: 2;
+    min-width: 145px;
 }
 
 .chartKeyList {
-    flex: 2; 
-    list-style: none; 
+    flex: 2;
+    list-style: none;
     padding: 0;
     margin: 0;
     font-size: 0.9rem;
     line-height: 1.4;
-    text-align: left; 
+    text-align: left;
 }
 
 .chartKeyItem {
-    margin-bottom: 0.4rem; 
-    display: flex; 
-    align-items: center; 
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
 }
 
 .keyDot {
     display: block;
-    width: 14px; 
-    height: 14px; 
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
-    margin-right: 10px; 
-    flex-shrink: 0; 
+    margin-right: 10px;
+    flex-shrink: 0;
 }
 
 .chartDescription {
@@ -136,19 +134,135 @@
 
 
 .philosophySection {
-    margin-top: 2.5rem; 
-    margin-bottom: 3rem; 
+    margin-top: 2.5rem;
+    margin-bottom: 3rem;
 }
 
 .philosophyCard {
-    background: #ecf0f1; 
+    background: #ecf0f1;
+}
+
+/* --- SECTION 3: ENVIRONMENTAL NEWS FEED --- */
+
+.newsFeedSection {
+    margin-bottom: 3rem;
+    margin-top: 2rem;
+}
+
+.newsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.8rem;
+    width: 100%;
 }
 
 
-@media (max-width: 992px) {
-  .mainContentSection {
-    grid-template-columns: 1fr; 
-  }
+/* .newsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 2fr);
+    gap: 0.8rem; 
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+} */
+
+.newsItemLink {
+    text-decoration: none;
+    color: inherit;
+}
+
+.newsItem {
+    background: #fcfcfc;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    padding: 0; 
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s;
+    text-align: left;
+    overflow: hidden; 
+}
+
+.newsImage {
+    width: 100%;
+    height: 60px; /* Reduced image height for better ratio */
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin-bottom: 0.2rem; 
+}
+
+.newsContent {
+    padding: 0 0.6rem 0.6rem 0.6rem; 
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.newsTitle {
+    font-size: 0.7rem; 
+    font-weight: 800; 
+    line-height: 1.15; 
+    margin-bottom: 0.2rem;
+    color: #34495e;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; 
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.newsSource {
+    font-size: 0.6rem; 
+    color: #7f8c8d;
+    margin-top: auto;
+}
+
+.externalLinkDisclaimer {
+    font-size: 0.75rem;
+    color: #999;
+    text-align: left;
+    margin-top: 1rem;
+}
+
+.viewMoreLink {
+    display: block;
+    text-align: right;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #4D7C8A;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.viewMoreLink:hover {
+    color: #38606b;
+}
+
+
+/* --- MEDIA QUERIES (Consolidated) --- */
+
+@media (max-width: 1400px) {
+    .newsGrid {
+        grid-template-columns: repeat(6, 1fr); 
+    }
+}
+
+@media (max-width: 1000px) {
+    .mainContentSection {
+        grid-template-columns: 1fr;
+    }
+    .newsGrid {
+        grid-template-columns: repeat(4, 1fr); 
+    }
+}
+
+@media (max-width: 768px) {
+    .newsGrid {
+        grid-template-columns: repeat(3, 1fr); 
+    }
 }
 
 @media (max-width: 600px) {
@@ -158,17 +272,30 @@
     .cardTitle {
         font-size: 1.5rem;
     }
-    .infoCard, .chartCard, .philosophyCard {
-        padding: 1.5rem; 
+    .infoCard, .chartCard, .philosophyCard, .newsFeedCard {
+        padding: 1.5rem;
     }
     .chartAndKeyWrapper {
-        flex-direction: column; 
+        flex-direction: column;
         align-items: flex-start;
     }
     .chartKeyList {
-        width: 100%; 
+        width: 100%;
     }
     .chartArea {
         width: 100%;
+    }
+    .newsGrid {
+        grid-template-columns: 1fr; 
+        gap: 0.5rem;
+    }
+    .newsItem {
+        padding: 0; 
+    }
+    .newsImage {
+        height: 100px; 
+    }
+    .newsContent {
+        padding: 0.6rem;
     }
 }
