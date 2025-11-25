@@ -1,103 +1,144 @@
-'use client'; 
+"use client";
 
 import React from "react";
-import styles from "../styles/homepage.css";
-
-import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts"; 
+import styles from "../styles/homepage.module.css";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 const GLOBAL_AVERAGE_DATA = [
-    { name: 'Transport', value: 35, colour: '#4D7C8A', description: 'Cars, buses, and trains' },
-    { name: 'Energy/Housing', value: 25, colour: '#7465A7', description: 'Heating and electricity use' },
-    { name: 'Food/Diet', value: 20, colour: '#C38148', description: 'Meat, dairy, and produce impact' },
-    { name: 'Shopping/Goods', value: 15, colour: '#CD5B68', description: 'Purchases and consumption' },
-    { name: 'Other/Waste', value: 5, colour: '#5F5F5F', description: 'Waste and miscellaneous' },
+  {
+    name: "Transport",
+    value: 35,
+    colour: "#4D7C8A",
+    description: "Cars, buses, and trains",
+  },
+  {
+    name: "Energy/Housing",
+    value: 25,
+    colour: "#7465A7",
+    description: "Heating and electricity use",
+  },
+  {
+    name: "Food/Diet",
+    value: 20,
+    colour: "#C38148",
+    description: "Meat, dairy, and produce impact",
+  },
+  {
+    name: "Shopping/Goods",
+    value: 15,
+    colour: "#CD5B68",
+    description: "Purchases and consumption",
+  },
+  {
+    name: "Other/Waste",
+    value: 5,
+    colour: "#5F5F5F",
+    description: "Waste and miscellaneous",
+  },
 ];
 
+const formatNumber = (num) => num.toLocaleString("en-GB");
 const TOTAL_COMMUNITY_CO2 = 125000;
-
-const formatNumber = (num) => num.toLocaleString('en-GB');
-
+const AUTH_PAGE_PATH = "/auth/login";
 
 export default function HomePage() {
   return (
-    <main className={styles.container}>
-      <h1 className={styles.title}>Carbon Calculator</h1>
+    <main className={styles.landingContainer}>
+      <h1 className={styles.landingTitle}>
+        Track Your Footprint, Make an Impact
+      </h1>
 
-      <section className={styles.globalStatsSection}>
-          <h2>Community Footprint Snapshot</h2>
-          
-          <div className={styles.statsSummary}>
-              <p>
-                  Our users have collectively tracked {formatNumber(TOTAL_COMMUNITY_CO2)} kg of CO<sub>2</sub> this month.
-              </p>
-              <p>
-                  Here is the estimated **average** breakdown of an individual's footprint:
-              </p>
+      <section className={styles.mainContentSection}>
+        <div className={styles.infoCard}>
+          <h2 className={styles.cardTitle}>Welcome to CarbonCalc</h2>
+
+          <p className={styles.paragraph}>
+            This app helps you track your personal carbon footprint based on
+            your daily activities, like transport, energy use, food, shopping,
+            and lifestyle choices.
+          </p>
+          <p className={styles.paragraph}>
+            See how your habits compare to the estimated global average
+            breakdown shown here.
+          </p>
+
+          <div className={styles.communityStat}>
+            <p>
+              Our community has tracked{" "}
+              <span className={styles.statHighlight}>
+                {formatNumber(TOTAL_COMMUNITY_CO2)} kg of CO₂
+              </span>{" "}
+              this month.
+            </p>
           </div>
 
-          <div className={styles.pieChartContainer}>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                    <Pie
-                      data={GLOBAL_AVERAGE_DATA}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={100}
-                      innerRadius={50} 
-                      paddingAngle={2}
-                    >
-                      {GLOBAL_AVERAGE_DATA.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.colour} />
-                      ))}
-                    </Pie>
+          <a href={AUTH_PAGE_PATH} className={styles.ctaButton}>
+            Log in or Register to Start Tracking
+          </a>
+        </div>
 
-                    <Legend
-                        layout="vertical"
-                        verticalAlign="middle"
-                        align="right"
-                        wrapperStyle={{ paddingLeft: '20px' }}
-                        payload={GLOBAL_AVERAGE_DATA.map((a) => ({
-                            id: a.name,
-                            value: `${a.name} (${a.value}%)`,
-                            type: 'square',
-                            color: a.colour,
-                        }))}
-                    />
+        <div className={styles.chartCard}>
+          <h2 className={styles.cardTitle}>
+            Estimated Global Average Breakdown
+          </h2>
+
+          <div className={styles.chartAndKeyWrapper}>
+            {/* Pie Chart */}
+            <div className={styles.chartArea}>
+              <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie
+                    data={GLOBAL_AVERAGE_DATA}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    innerRadius={40}
+                    paddingAngle={2}
+                  >
+                    {GLOBAL_AVERAGE_DATA.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.colour} />
+                    ))}
+                  </Pie>
                 </PieChart>
               </ResponsiveContainer>
+            </div>
+
+            <ul className={styles.chartKeyList}>
+              {GLOBAL_AVERAGE_DATA.map((entry) => (
+                <li key={entry.name} className={styles.chartKeyItem}>
+                  <span
+                    style={{ backgroundColor: entry.colour }}
+                    className={styles.keyDot}
+                  ></span>
+                  {entry.name} ({entry.value}%)
+                </li>
+              ))}
+            </ul>
           </div>
+          <p className={styles.chartDescription}>
+            This shows the average footprint distribution. Your results will be
+            personalised.
+          </p>
+        </div>
       </section>
 
-      <section className={styles.introductionSection}>
-        <p className={styles.paragraph}>
-          Welcome to the Carbon Calculator. This app helps you track your
-          personal carbon footprint based on your daily activities, like
-          transport, energy use, food, shopping, and lifestyle choices.
-        </p>
-        <p className={styles.paragraph}>
-          By logging your activities, you can see how much CO<sub>2</sub>{" "}
-          you produce and get suggestions for reducing your
-          impact on the environment. Earn points for completing eco-friendly
-          actions and track your monthly progress.
-        </p>
-        <p className={styles.paragraph}>
-          Start by logging in or registering to create your account, and
-          begin your journey toward a more sustainable lifestyle.
-        </p>
-      </section>
-
-      <section className={styles.blurbSection}>
-        <div className={styles.blurbContent}>
-          <p className={styles.blurbParagraph}>
-            We get it. The world's biggest polluters aren't individuals, and
-            true change requires action from corporations and billionaires. But
-            that doesn't mean we're powerless! Think of this as your personal
-            journey, where every small step adds up. Our website is a fun, easy
-            way to start. Track your carbon footprint, discover unique ways to
-            offset your emissions, and even find live volunteering gigs near
-            you. It's about progress, not perfection.
+      {/* --- SECTION 2: PHILOSOPHY CARD --- */}
+      <section className={styles.philosophySection}>
+        <div className={styles.philosophyCard}>
+          <h3 className={styles.cardTitle}>
+            It's About Progress, Not Perfection
+          </h3>
+          <p className={styles.paragraph}>
+            We know that global change requires corporate action, but that
+            doesn't mean we're powerless! Think of this as your personal
+            journey, where every small step adds up.
+          </p>
+          <p className={styles.paragraph}>
+            Our website is a fun, easy way to start. Track your carbon
+            footprint, discover unique ways to offset your emissions, and even
+            find live volunteering gigs near you.
           </p>
         </div>
       </section>
