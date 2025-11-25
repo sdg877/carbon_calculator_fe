@@ -5,14 +5,6 @@ import styles from "../styles/homepage.css";
 
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts"; 
 
-// const GLOBAL_AVERAGE_DATA = [
-//     { name: 'Transport', value: 35, colour: '#6DBF73', description: 'Cars, buses, and trains' },
-//     { name: 'Energy/Housing', value: 25, colour: '#4E91D9', description: 'Heating and electricity use' },
-//     { name: 'Food/Diet', value: 20, colour: '#F5A15A', description: 'Meat, dairy, and produce impact' },
-//     { name: 'Shopping/Goods', value: 15, colour: '#E57373', description: 'Purchases and consumption' },
-//     { name: 'Other/Waste', value: 5, colour: '#9B6DD6', description: 'Waste and miscellaneous' },
-// ];
-
 const GLOBAL_AVERAGE_DATA = [
     { name: 'Transport', value: 35, colour: '#4D7C8A', description: 'Cars, buses, and trains' },
     { name: 'Energy/Housing', value: 25, colour: '#7465A7', description: 'Heating and electricity use' },
