@@ -1,0 +1,174 @@
+.landingContainer {
+  max-width: 1000px; 
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f7f7f7; 
+  min-height: 100vh;
+  font-family: var(--font-dm-sans, sans-serif); 
+  color: #333; 
+}
+
+.landingTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  color: #2c3e50;
+}
+
+
+.infoCard, .chartCard, .philosophyCard {
+  background: #ffffff;
+  border-radius: 16px; 
+  padding: 2rem;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); 
+}
+
+.cardTitle {
+   text-align: center; 
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #34495e;
+}
+
+.paragraph {
+   text-align: center; 
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+
+.mainContentSection {
+    display: grid;
+    /* FIX: Set columns to equal size */
+    grid-template-columns: 1fr 1fr; 
+    gap: 2rem; 
+    margin-bottom: 2.5rem;
+}
+
+.communityStat {
+    padding: 0.8rem;
+    margin-bottom: 1.5rem;
+    background-color: #ecf0f1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #34495e;
+}
+
+.statHighlight {
+    font-weight: 700;
+    color: #4D7C8A;
+}
+
+.ctaButton {
+    display: block; 
+    width: 100%;
+    padding: 1rem;
+    background-color: #CD5B68; 
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+    border: none; 
+    cursor: pointer;
+}
+
+.ctaButton:hover {
+    background-color: #b64e5c;
+}
+
+.chartCard {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+}
+
+.chartAndKeyWrapper {
+    display: flex;
+    justify-content: center; /* Ensures chart and key are centred within the card */
+    align-items: center; 
+    gap: 1rem; 
+    margin-bottom: 1rem;
+}
+
+.chartArea {
+    flex: 2; 
+    min-width: 145px; 
+}
+
+.chartKeyList {
+    flex: 2; 
+    list-style: none; 
+    padding: 0;
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    text-align: left; 
+}
+
+.chartKeyItem {
+    margin-bottom: 0.4rem; 
+    display: flex; 
+    align-items: center; 
+}
+
+.keyDot {
+    display: block;
+    width: 14px; 
+    height: 14px; 
+    border-radius: 50%;
+    margin-right: 10px; 
+    flex-shrink: 0; 
+}
+
+.chartDescription {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+
+.philosophySection {
+    margin-top: 2.5rem; 
+    margin-bottom: 3rem; 
+}
+
+.philosophyCard {
+    background: #ecf0f1; 
+}
+
+
+@media (max-width: 992px) {
+  .mainContentSection {
+    grid-template-columns: 1fr; 
+  }
+}
+
+@media (max-width: 600px) {
+    .landingTitle {
+        font-size: 2rem;
+    }
+    .cardTitle {
+        font-size: 1.5rem;
+    }
+    .infoCard, .chartCard, .philosophyCard {
+        padding: 1.5rem; 
+    }
+    .chartAndKeyWrapper {
+        flex-direction: column; 
+        align-items: flex-start;
+    }
+    .chartKeyList {
+        width: 100%; 
+    }
+    .chartArea {
+        width: 100%;
+    }
+}
