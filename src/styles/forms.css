@@ -17,7 +17,8 @@ body {
   cursor: pointer;
   transition: background-color 0.3s, transform 0.1s;
   margin-top: 10px;
-  width: 100%;
+  width: 40%;
+  align-items: center;
 }
 
 .primary-button:hover,
