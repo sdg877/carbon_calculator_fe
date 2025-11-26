@@ -102,6 +102,10 @@ export default function HomePage() {
     });
   };
 
+  const cleanTitle = (title) => {
+    return title.replace(/\*\*/g, "").replace(/""/g, '"').trim();
+  };
+
   return (
     <main className={styles.landingContainer}>
       <h1 className={styles.landingTitle}>
@@ -156,7 +160,6 @@ export default function HomePage() {
                     innerRadius={40}
                     paddingAngle={2}
                   >
-                    {/* FIX: Corrected variable name from GLOBAL_AVERVE_DATA to GLOBAL_AVERAGE_DATA */}
                     {GLOBAL_AVERAGE_DATA.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.colour} />
                     ))}
@@ -236,7 +239,10 @@ export default function HomePage() {
                     />
                   )}
                   <div className={styles.newsContent}>
-                    <p className={styles.newsTitle}>{article.title}</p>
+                    {/* FIX: Apply the cleanTitle function here */}
+                    <p className={styles.newsTitle}>
+                      {cleanTitle(article.title)}
+                    </p>
                     <p className={styles.newsSource}>
                       {article.source.name || "Unknown"} |{" "}
                       {formatPublishedAt(article.publishedAt)}
