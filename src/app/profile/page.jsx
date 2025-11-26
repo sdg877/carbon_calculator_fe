@@ -1,17 +1,23 @@
 "use client";
 import { useState, useEffect } from "react";
+import "../../styles/profile.css";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
   const [error, setError] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  const [updateMessage, setUpdateMessage] = useState("");
   const [passwordSuccess, setPasswordSuccess] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [editUsername, setEditUsername] = useState("");
+  const [editEmail, setEditEmail] = useState("");
+  const [recentFootprint, setRecentFootprint] = useState(null);
+
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchUser = async () => {
-      const token = localStorage.getItem("token");
       if (!token) {
         setError("You must be logged in to view your profile.");
         return;
@@ -21,23 +27,68 @@ export default function ProfilePage() {
         const res = await fetch(`${API_URL}/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
         if (!res.ok) throw new Error("Failed to fetch profile");
-
         const data = await res.json();
         setUser(data);
+        setEditUsername(data.username);
+        setEditEmail(data.email);
       } catch (err) {
         setError(err.message);
       }
     };
 
     fetchUser();
-  }, []);
+  }, [token]);
+
+
+  useEffect(() => {
+    const fetchRecentFootprint = async () => {
+      if (!token) return;
+      try {
+        const res = await fetch(`${API_URL}/footprints?limit=1&sort=desc`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.length > 0) setRecentFootprint(data[0]);
+      } catch {}
+    };
+
+    fetchRecentFootprint();
+  }, [user, token]);
+
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    setError("");
+    setUpdateMessage("");
+
+    try {
+      const res = await fetch(`${API_URL}/profile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          username: editUsername,
+          email: editEmail,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "Failed to update profile");
+
+      setUser(data);
+      setUpdateMessage("Profile updated successfully!");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
-    setPasswordSuccess("");
     setError("");
+    setPasswordSuccess("");
 
     if (!newPassword) {
       setError("Please enter a new password.");
@@ -45,7 +96,6 @@ export default function ProfilePage() {
     }
 
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch(`${API_URL}/update-password`, {
         method: "POST",
         headers: {
@@ -71,43 +121,69 @@ export default function ProfilePage() {
 
   return (
     <div className="profile-container">
-      <h1>My Profile</h1>
+      <h1 className="profile-title">My Profile</h1>
+
+      {updateMessage && <div className="success-banner">{updateMessage}</div>}
+
       {user ? (
-        <div className="profile-details">
-          <p>
-            <strong>Username:</strong> {user.username}
-          </p>
-          <p>
-            <strong>Email:</strong> {user.email}
-          </p>
+        <div className="profile-grid">
+          {/* Account Details */}
+          <div className="profile-box">
+            <h2>Account Details</h2>
+            <form onSubmit={handleProfileUpdate} className="profile-form">
+              <label>Username</label>
+              <input
+                type="text"
+                value={editUsername}
+                onChange={(e) => setEditUsername(e.target.value)}
+              />
 
-          {user.created_at && (
-            <p>
-              <strong>Account Created:</strong>{" "}
-              {new Date(user.created_at).toLocaleString()}
-            </p>
-          )}
+              <label>Email</label>
+              <input
+                type="email"
+                value={editEmail}
+                onChange={(e) => setEditEmail(e.target.value)}
+              />
 
-          {user.last_login_at && (
-            <p>
-              <strong>Last Login:</strong>{" "}
-              {new Date(user.last_login_at).toLocaleString()}
-            </p>
-          )}
+              <button type="submit">Update Profile</button>
+            </form>
+          </div>
 
-          <form onSubmit={handlePasswordChange} className="password-form">
-            <h3>Change Password</h3>
-            <input
-              type="password"
-              placeholder="New Password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
-            <button type="submit">Update Password</button>
-          </form>
+          <div className="profile-box">
+            <h2>Security</h2>
+            <form onSubmit={handlePasswordChange} className="password-form">
+              <label>New Password</label>
+              <input
+                type="password"
+                placeholder="New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+              />
+              <button type="submit">Update Password</button>
+            </form>
+            {passwordSuccess && <p className="success">{passwordSuccess}</p>}
+          </div>
 
-          {passwordSuccess && <p className="success">{passwordSuccess}</p>}
+          <div className="profile-box">
+            <h2>Recent Activity</h2>
+            {user.last_login_at ? (
+              <p>
+                <strong>Last Login:</strong>{" "}
+                {new Date(user.last_login_at).toLocaleString()}
+              </p>
+            ) : (
+              <p>No login activity yet</p>
+            )}
+            {recentFootprint ? (
+              <p>
+                <strong>Last Footprint Added:</strong>{" "}
+                {recentFootprint.activity_type} – {recentFootprint.carbon_kg} kg
+              </p>
+            ) : (
+              <p>No footprints added yet</p>
+            )}
+          </div>
         </div>
       ) : (
         <p>Loading profile...</p>
