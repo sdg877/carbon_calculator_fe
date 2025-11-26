@@ -1,0 +1,81 @@
+.profile-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: "Inter", sans-serif;
+}
+
+.profile-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.4rem;
+  font-weight: 600;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.profile-box {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.8rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.profile-box h2 {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.profile-form input,
+.password-form input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.profile-form button,
+.password-form button {
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #0066ff;
+  color: white;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.profile-form button:hover,
+.password-form button:hover {
+  background: #004bcc;
+}
+
+.success {
+  margin-top: 1rem;
+  color: green;
+  font-weight: 500;
+}
+
+.error {
+  color: red;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .profile-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .profile-box:nth-child(1) {
+    grid-column: span 2;
+  }
+}
