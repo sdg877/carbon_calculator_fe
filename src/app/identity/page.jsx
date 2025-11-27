@@ -122,14 +122,14 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="auth-page-background">
-      <div className="auth-card">
-        <h1 className="auth-title">CarbonCalc</h1>
+    <div className="authContainer">
+      <div className="authCard">
+        <h1 className="authTitle">CarbonCalc</h1>
         {isLogin ? (
-          <form onSubmit={handleLogin} className="auth-form login-form">
-            <h2>Login to Your Account</h2>
+          <form onSubmit={handleLogin} className="authForm loginForm">
+            <h2 className="cardTitle">Login to Your Account</h2>
             {loginError && <p className="error">{loginError}</p>}
-            <div className="form-group">
+            <div className="formGroup">
               <label htmlFor="loginEmail">Email:</label>
               <input
                 id="loginEmail"
@@ -140,7 +140,7 @@ export default function AuthPage() {
                 required
               />
             </div>
-            <div className="form-group">
+            <div className="formGroup">
               <label htmlFor="loginPassword">Password:</label>
               <input
                 id="loginPassword"
@@ -151,26 +151,30 @@ export default function AuthPage() {
                 required
               />
             </div>
-            <button type="submit" className="primary-button">
+            <button type="submit" className="ctaButton">
               Login
             </button>
-            <div className="toggle-container">
-              <p>Don't have an account?</p>
+            <div className="toggleContainer">
+              <p className="paragraph">Don't have an account?</p>
               <button
                 type="button"
                 onClick={() => setIsLogin(false)}
-                className="toggle-button"
+                className="toggleButton"
               >
                 Register here
               </button>
             </div>
           </form>
         ) : (
-          <form onSubmit={handleRegister} className="auth-form register-form">
-            <h2>Create an Account</h2>
+          <form onSubmit={handleRegister} className="authForm registerForm">
+            <h2 className="cardTitle">Create an Account</h2>
             {registerError && <p className="error">{registerError}</p>}
-            {registerSuccess && <p className="success">{registerSuccess}</p>}
-            <div className="form-group">
+            {registerSuccess && (
+              <p className="success">
+                Registration successful! You are now logged in.
+              </p>
+            )}
+            <div className="formGroup">
               <label htmlFor="registerUsername">Username:</label>
               <input
                 id="registerUsername"
@@ -181,7 +185,7 @@ export default function AuthPage() {
                 required
               />
             </div>
-            <div className="form-group">
+            <div className="formGroup">
               <label htmlFor="registerEmail">Email:</label>
               <input
                 id="registerEmail"
@@ -192,7 +196,7 @@ export default function AuthPage() {
                 required
               />
             </div>
-            <div className="form-group">
+            <div className="formGroup">
               <label htmlFor="registerPassword">Password:</label>
               <input
                 id="registerPassword"
@@ -203,15 +207,15 @@ export default function AuthPage() {
                 required
               />
             </div>
-            <button type="submit" className="primary-button">
+            <button type="submit" className="ctaButton">
               Register
             </button>
-            <div className="toggle-container">
-              <p>Already have an account?</p>
+            <div className="toggleContainer">
+              <p className="paragraph">Already have an account?</p>
               <button
                 type="button"
                 onClick={() => setIsLogin(true)}
-                className="toggle-button"
+                className="toggleButton"
               >
                 Login here
               </button>
