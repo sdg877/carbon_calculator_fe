@@ -7,6 +7,7 @@ import "../styles/navbar.css";
 
 export default function Navbar() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -49,32 +50,63 @@ export default function Navbar() {
     router.push("/identity");
   };
 
+  const handleLinkClick = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${isMenuOpen ? "open" : ""}`}>
       <div className="navbar-logo">
         <Link href="/">CarbonCalc</Link>
       </div>
-      <ul className="navbar-links">
+
+      <button
+        className="menu-toggle"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        aria-expanded={isMenuOpen}
+        aria-controls="navbar-menu"
+      >
+        <div className="hamburger"></div>
+      </button>
+
+      <ul className="navbar-links" id="navbar-menu">
         <li>
-          <Link href="/">Home</Link>
+          <Link href="/" onClick={handleLinkClick}>
+            Home
+          </Link>
         </li>
         <li>
-          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/dashboard" onClick={handleLinkClick}>
+            Dashboard
+          </Link>
         </li>
         <li>
-          <Link href="/footprint">Add Activity</Link>
+          <Link href="/footprint" onClick={handleLinkClick}>
+            Add Activity
+          </Link>
         </li>
         <li>
-          <Link href="/profile">Profile</Link>
+          <Link href="/profile" onClick={handleLinkClick}>
+            Profile
+          </Link>
         </li>
         {!loggedIn && (
           <li>
-            <Link href="/identity">Login</Link>
+            <Link href="/identity" onClick={handleLinkClick}>
+              Login
+            </Link>
           </li>
         )}
         {loggedIn && (
           <li>
-            <button onClick={handleLogout}>Logout</button>
+            <button
+              onClick={() => {
+                handleLogout();
+                handleLinkClick();
+              }}
+            >
+              Logout
+            </button>
           </li>
         )}
       </ul>
