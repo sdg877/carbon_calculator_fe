@@ -40,7 +40,6 @@ export default function ProfilePage() {
     fetchUser();
   }, [token]);
 
-
   useEffect(() => {
     const fetchRecentFootprint = async () => {
       if (!token) return;
@@ -179,6 +178,10 @@ export default function ProfilePage() {
               <p>
                 <strong>Last Footprint Added:</strong>{" "}
                 {recentFootprint.activity_type} – {recentFootprint.carbon_kg} kg
+                <br />
+                <small>
+                  on {new Date(recentFootprint.created_at).toLocaleString()}
+                </small>
               </p>
             ) : (
               <p>No footprints added yet</p>
