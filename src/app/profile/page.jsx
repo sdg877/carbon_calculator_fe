@@ -164,7 +164,7 @@ export default function ProfilePage() {
             {passwordSuccess && <p className="success">{passwordSuccess}</p>}
           </div>
 
-          <div className="profile-box">
+          <div className="profile-box profile-box-activity">
             <h2>Recent Activity</h2>
             {user.last_login_at ? (
               <p>
@@ -177,11 +177,8 @@ export default function ProfilePage() {
             {recentFootprint ? (
               <p>
                 <strong>Last Footprint Added:</strong>{" "}
-                {recentFootprint.activity_type} – {recentFootprint.carbon_kg} kg
-                <br />
-                <small>
-                  on {new Date(recentFootprint.created_at).toLocaleString()}
-                </small>
+                {recentFootprint.activity_type} – {recentFootprint.carbon_kg} kg on {new Date(recentFootprint.created_at).toLocaleString()}
+    
               </p>
             ) : (
               <p>No footprints added yet</p>
