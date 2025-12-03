@@ -205,7 +205,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* --- SECTION 3: ENVIRONMENTAL NEWS FEED (Dynamic Content) --- */}
       <section className={styles.newsFeedSection}>
         <div className={styles.newsFeedCard}>
           <h3 className={styles.cardTitle}>
@@ -239,7 +238,6 @@ export default function HomePage() {
                     />
                   )}
                   <div className={styles.newsContent}>
-                    {/* FIX: Apply the cleanTitle function here */}
                     <p className={styles.newsTitle}>
                       {cleanTitle(article.title)}
                     </p>
