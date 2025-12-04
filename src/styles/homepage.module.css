@@ -96,31 +96,36 @@
 
 .chartAndKeyWrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
   margin-bottom: 1rem;
+  width: 100%;
 }
 
 .chartArea {
-  flex: 2;
-  min-width: 145px;
+  flex: none;
+  width: 100%;
+  max-width: 300px;
+  min-width: 0;
 }
 
 .chartKeyList {
-  flex: 2;
+  flex: none;
   list-style: none;
   padding: 0;
   margin: 0;
   font-size: 0.9rem;
   line-height: 1.4;
-  text-align: left;
+  text-align: center;
+  width: 100%;
 }
 
 .chartKeyItem {
-  margin-bottom: 0.4rem;
-  display: flex;
+  margin: 0.4rem auto;
+  display: inline-flex;
   align-items: center;
+  margin-right: 15px;
 }
 
 .keyDot {
@@ -273,10 +278,15 @@
   }
   .chartAndKeyWrapper {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
   .chartKeyList {
     width: 100%;
+    text-align: center;
+  }
+  .chartKeyItem {
+    margin: 0.4rem auto;
+    justify-content: center;
   }
   .chartArea {
     width: 100%;
