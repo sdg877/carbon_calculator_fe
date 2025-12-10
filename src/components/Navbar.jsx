@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import "../styles/navbar.css";
 
 export default function Navbar() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
+
+  const currentPath = usePathname();
 
   useEffect(() => {
     const checkToken = () => setLoggedIn(!!localStorage.getItem("token"));
@@ -70,33 +72,47 @@ export default function Navbar() {
       </button>
 
       <ul className="navbar-links" id="navbar-menu">
-        <li>
-          <Link href="/" onClick={handleLinkClick}>
-            Home
-          </Link>
-        </li>
-        <li>
-          <Link href="/dashboard" onClick={handleLinkClick}>
-            Dashboard
-          </Link>
-        </li>
-        <li>
-          <Link href="/footprint" onClick={handleLinkClick}>
-            Add Activity
-          </Link>
-        </li>
-        <li>
-          <Link href="/profile" onClick={handleLinkClick}>
-            Profile
-          </Link>
-        </li>
-        {!loggedIn && (
+        {currentPath !== "/" && (
+          <li>
+            <Link href="/" onClick={handleLinkClick}>
+              Home
+            </Link>
+          </li>
+        )}
+
+        {currentPath !== "/dashboard" && (
+          <li>
+            <Link href="/dashboard" onClick={handleLinkClick}>
+              Dashboard
+            </Link>
+          </li>
+        )}
+
+        {currentPath !== "/footprint" && (
+          <li>
+            <Link href="/footprint" onClick={handleLinkClick}>
+              Add Activity
+            </Link>
+          </li>
+        )}
+
+        {/* Profile Link: Only show if NOT on the profile page */}
+        {currentPath !== "/profile" && (
+          <li>
+            <Link href="/profile" onClick={handleLinkClick}>
+              Profile
+            </Link>
+          </li>
+        )}
+
+        {!loggedIn && currentPath !== "/identity" && (
           <li>
             <Link href="/identity" onClick={handleLinkClick}>
               Login
             </Link>
           </li>
         )}
+
         {loggedIn && (
           <li>
             <button
