@@ -120,13 +120,15 @@ export default function ProfilePage() {
 
   return (
     <div className="profile-container">
-      <h1 className="profile-title">My Profile</h1>
+      {/* ⭐️ CHANGED LINE HERE */}
+      <h1 className="profile-title">
+        {user ? `${user.username}'s Profile` : 'My Profile'}
+      </h1>
 
       {updateMessage && <div className="success-banner">{updateMessage}</div>}
 
       {user ? (
         <div className="profile-grid">
-          {/* Account Details */}
           <div className="profile-box">
             <h2>Account Details</h2>
             <form onSubmit={handleProfileUpdate} className="profile-form">
