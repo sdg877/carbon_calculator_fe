@@ -13,11 +13,24 @@ async function fetchEnvironmentalNews() {
   }
 
   const relevantQuery =
-    "(climate OR environment OR sustainability OR ecology) AND NOT (crime OR police OR finance OR drug OR court)";
+    "carbon footprint OR climate change OR renewable energy OR recycling OR pollution";
+
+  const excludeDomains = [
+    "dailymail.co.uk",
+    "foxnews.com",
+    "tmz.com",
+    "bbc.co.uk",
+    "telegraph.co.uk",
+    "theguardian.com",
+    "independent.co.uk",
+    "mirror.co.uk",
+    "cnn.com",
+    "nbcnews.com",
+  ].join(",");
 
   const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
     relevantQuery
-  )}&language=en&sortBy=publishedAt&pageSize=20&apiKey=${API_KEY}`;
+  )}&language=en&sortBy=publishedAt&pageSize=20&apiKey=${API_KEY}&excludeDomains=${excludeDomains}`;
 
   try {
     const response = await fetch(url);
