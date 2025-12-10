@@ -25,6 +25,11 @@
   gap: 25px;
 }
 
+.navbar-links li {
+  display: flex;
+  align-items: center;
+}
+
 .navbar-links li a,
 .navbar-links li button {
   color: #ecf0f1;
