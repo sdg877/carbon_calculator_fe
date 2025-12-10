@@ -120,7 +120,6 @@ export default function ProfilePage() {
 
   return (
     <div className="profile-container">
-      {/* ⭐️ CHANGED LINE HERE */}
       <h1 className="profile-title">
         {user ? `${user.username}'s Profile` : 'My Profile'}
       </h1>
