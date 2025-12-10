@@ -1,27 +1,28 @@
 .profile-container {
-  max-width: 900px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1.5rem;
   font-family: "Inter", sans-serif;
 }
 
 .profile-title {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   font-size: 2.4rem;
   font-weight: 600;
+  margin-top: 0.2rem;
 }
 
 .profile-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .profile-box {
   background: #ffffff;
   border-radius: 12px;
-  padding: 2rem;
+  padding: 1rem;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
 }
 
@@ -29,6 +30,7 @@
 .password-form label {
   padding-bottom: 5px;
   display: block;
+  font-size: 0.95rem;
 }
 
 .profile-box-activity {
@@ -36,16 +38,17 @@
 }
 
 .profile-box h2 {
-  margin-bottom: 1rem;
-  font-size: 1.4rem;
+  margin-bottom: 0.7rem;
+  margin-top: 0rem;
+  font-size: 1.3rem;
   font-weight: 500;
 }
 
 .profile-form input,
 .password-form input {
-  width: 100%;
-  padding: 0.8rem;
-  margin-bottom: 1rem;
+  width: 90%;
+  padding: 0.7rem;
+  margin-bottom: 0.8rem;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 1rem;
@@ -69,7 +72,7 @@
 }
 
 .success {
-  margin-top: 1rem;
+  margin-top: 0.8rem;
   color: green;
   font-weight: 500;
 }
@@ -82,32 +85,38 @@
 
 @media (min-width: 768px) {
   .profile-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
 
   .profile-box:nth-child(1) {
-    grid-column: span 2;
-    padding: 1.8rem 4rem;
+    grid-column: span 1;
+    padding: 1.5rem 2rem;
   }
 
   .profile-box:nth-child(2) {
-    padding: 1.8rem 2rem;
+    grid-column: span 1;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
-
+  
   .profile-box-activity {
-    grid-column: span 2;
-    padding: 1.8rem 4rem;
+    grid-column: 1 / -1;
+    padding: 1.5rem 2rem;
+    margin-top: -1rem;
   }
 
-  .profile-box:nth-child(2) input {
+  .profile-box:nth-child(2) .password-form input {
     max-width: 80%;
     margin-left: auto;
     margin-right: auto;
   }
-
-  .profile-box:nth-child(2) button {
-    display: block;
+  
+  .profile-box:nth-child(2) .password-form button {
     margin-left: auto;
     margin-right: auto;
+    display: block;
   }
 }
