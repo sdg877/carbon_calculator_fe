@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import "../styles/forms.css";
+import "../styles/globals.css";
 import AuthWrapper from "../components/AuthWrapper.js";
 import Navbar from "../components/Navbar.jsx";
 import ModalRoot from "../components/ModalRoot.jsx";
