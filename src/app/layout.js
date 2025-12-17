@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className} suppressHydrationWarning={true}>
         <AuthWrapper>
           <Navbar />
-          <main className="min-h-screen">{children}</main>
+          <main className="main-content">{children}</main>
         </AuthWrapper>
         <ModalRoot />
       </body>
