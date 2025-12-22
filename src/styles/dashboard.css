@@ -1,70 +1,73 @@
 .dashboard-page {
   background-color: #f0f2f5;
   box-sizing: border-box;
-  padding: 0.5rem;
+  padding: 1rem 2rem;
+  height: calc(100vh - 120px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .dashboard-container {
-  max-width: 1200px;
+  max-width: 98%;
   margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .dashboard-title {
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   margin: 0 0 0.5rem 0;
   color: #2c3e50;
   text-align: center;
-  font-weight: 450;
+  font-weight: 700;
 }
 
 .dashboard-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-height: calc(100vh - 120px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  flex: 1;
+  min-height: 0;
+  margin-bottom: 1rem;
 }
 
 .chart-card {
   background-color: #ffffff !important;
   border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  padding: 1.2rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   border: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
 .chart-card h2 {
-  margin-bottom: 1rem;
+  margin-bottom: 0.2rem;
   font-size: 1.1rem;
-  font-weight: 700;
   color: #34495e;
   text-align: center;
 }
 
-.demo-message {
-  background: #ecf0f1;
+.chart-card h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
   color: #34495e;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  font-size: 0.85rem;
   text-align: center;
-  border: 1px solid #dcdde1;
 }
 
-@media (min-width: 1024px) {
-  .dashboard-container {
-    padding: 2rem;
-  }
-  .dashboard-title {
-    font-size: 2.2rem;
+@media (max-width: 1023px) {
+  .dashboard-page {
+    height: auto;
+    overflow-y: auto;
   }
   .dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-  }
-  .chart-card h2 {
-    font-size: 1.4rem;
+    display: flex;
+    flex-direction: column;
   }
 }
