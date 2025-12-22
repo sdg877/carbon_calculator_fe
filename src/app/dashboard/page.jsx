@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import "../../styles/dashboard.css"
+import "../../styles/dashboard.css";
 import {
   PieChart,
   Pie,
@@ -19,18 +19,18 @@ import {
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const CATEGORY_COLOURS = {
-  transport: "#6DBF73",
-  energy: "#4E91D9",
-  food: "#F5A15A",
-  shopping: "#E57373",
-  waste: "#9B6DD6",
-  other: "#4DD0B2",
-  travel: "#FFB86C",
-  services: "#64B5F6",
-  housing: "#81C784",
-  leisure: "#BA68C8",
-  flights: "#FF8A65",
-  commuting: "#AED581",
+  transport: "#A29BFE",
+  flights: "#D6A2E8",
+  leisure: "#E0D7FF",
+  energy: "#74B9FF",
+  services: "#81ECEC",
+  travel: "#7499FF",
+  commuting: "#A5D8FF",
+  food: "#B2BEC3",
+  shopping: "#636E72",
+  housing: "#D1D8E0",
+  waste: "#CED6E0",
+  other: "#F1F2F6",
 };
 
 const DEMO_FOOTPRINTS = [
@@ -223,7 +223,10 @@ export default function DashboardPage() {
           <div className="dashboard-grid">
             <div className="chart-card">
               <h2>By Activity</h2>
-              <ResponsiveContainer width="100%" height={isMobile ? 280 : 350}>
+              <ResponsiveContainer
+                width="100%"
+                height={isMobile ? 280 : "100%"}
+              >
                 <PieChart>
                   <Pie
                     data={aggregatedByCategory}
@@ -233,7 +236,8 @@ export default function DashboardPage() {
                     cy="50%"
                     outerRadius={isMobile ? 70 : 100}
                     innerRadius={isMobile ? 45 : 65}
-                    paddingAngle={5}
+                    paddingAngle={0}
+                    stroke="none"
                   >
                     {aggregatedByCategory.map((entry, i) => (
                       <Cell
