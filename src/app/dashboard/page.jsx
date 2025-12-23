@@ -1,6 +1,14 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+To link to the /activity page, you should use the Next.js Link component. This ensures the page transitions quickly without a full browser reload.
+
+1. Update your Imports
+Add Link to your imports at the top of the file:
+
+JavaScript
+
+import Link from "next/link";
 import "../../styles/dashboard.css";
 import {
   PieChart,
@@ -258,7 +266,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="chart-card">
-              <h2>Monthly Totals</h2>
+              <h2>Monthly Total</h2>
               <ResponsiveContainer width="100%" height={isMobile ? 280 : 350}>
                 <LineChart
                   data={aggregatedByMonth}
@@ -309,7 +317,18 @@ export default function DashboardPage() {
         ) : (
           <div className="chart-card">
             <p style={{ textAlign: "center" }}>
-              No data yet. Go to Add Activity to start tracking.
+              No data yet. Go to{" "}
+              <Link
+                href="/activity"
+                style={{
+                  color: "#cd5b68",
+                  fontWeight: "bold",
+                  textDecoration: "underline",
+                }}
+              >
+                Add Activity
+              </Link>{" "}
+              to start tracking.
             </p>
           </div>
         )}
