@@ -1,6 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect} from "react";
 import "../../styles/profile.css";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -15,42 +14,31 @@ export default function ProfilePage() {
   const [editEmail, setEditEmail] = useState("");
   const [recentFootprint, setRecentFootprint] = useState(null);
 
-  const router = useRouter();
-
   const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+useEffect(() => {
+  const token = localStorage.getItem("token"); 
 
-    if (!token) {
-      router.push("/identity");
-      return;
+  const fetchUser = async () => {
+    try {
+      const res = await fetch(`${API_URL}/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+
+      if (!res.ok) throw new Error("Failed to fetch profile");
+
+      const data = await res.json();
+      setUser(data);
+      setEditUsername(data.username);
+      setEditEmail(data.email);
+    } catch (err) {
+      setError(err.message);
     }
+  };
 
-    const fetchUser = async () => {
-      try {
-        const res = await fetch(`${API_URL}/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (res.status === 401) {
-          router.push("/identity");
-          return;
-        }
-
-        if (!res.ok) throw new Error("Failed to fetch profile");
-
-        const data = await res.json();
-        setUser(data);
-        setEditUsername(data.username);
-        setEditEmail(data.email);
-      } catch (err) {
-        setError(err.message);
-      }
-    };
-
-    fetchUser();
-  }, [router]);
+  fetchUser();
+}, []);
 
   useEffect(() => {
     const fetchRecentFootprint = async () => {
