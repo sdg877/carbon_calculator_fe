@@ -1,13 +1,6 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-To link to the /activity page, you should use the Next.js Link component. This ensures the page transitions quickly without a full browser reload.
-
-1. Update your Imports
-Add Link to your imports at the top of the file:
-
-JavaScript
-
 import Link from "next/link";
 import "../../styles/dashboard.css";
 import {
