@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import "../../styles/profile.css";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -14,20 +15,31 @@ export default function ProfilePage() {
   const [editEmail, setEditEmail] = useState("");
   const [recentFootprint, setRecentFootprint] = useState(null);
 
+  const router = useRouter();
+
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const fetchUser = async () => {
-      if (!token) {
-        setError("You must be logged in to view your profile.");
-        return;
-      }
+    const token = localStorage.getItem("token");
 
+    if (!token) {
+      router.push("/identity");
+      return;
+    }
+
+    const fetchUser = async () => {
       try {
         const res = await fetch(`${API_URL}/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+
+        if (res.status === 401) {
+          router.push("/identity");
+          return;
+        }
+
         if (!res.ok) throw new Error("Failed to fetch profile");
+
         const data = await res.json();
         setUser(data);
         setEditUsername(data.username);
@@ -38,7 +50,7 @@ export default function ProfilePage() {
     };
 
     fetchUser();
-  }, [token]);
+  }, [router]);
 
   useEffect(() => {
     const fetchRecentFootprint = async () => {
@@ -121,7 +133,7 @@ export default function ProfilePage() {
   return (
     <div className="profile-container">
       <h1 className="profile-title">
-        {user ? `${user.username}'s Profile` : 'My Profile'}
+        {user ? `${user.username}'s Profile` : "My Profile"}
       </h1>
 
       {updateMessage && <div className="success-banner">{updateMessage}</div>}
@@ -178,8 +190,8 @@ export default function ProfilePage() {
             {recentFootprint ? (
               <p>
                 <strong>Last Footprint Added:</strong>{" "}
-                {recentFootprint.activity_type} – {recentFootprint.carbon_kg} kg on {new Date(recentFootprint.created_at).toLocaleString()}
-    
+                {recentFootprint.activity_type} – {recentFootprint.carbon_kg} kg
+                on {new Date(recentFootprint.created_at).toLocaleString()}
               </p>
             ) : (
               <p>No footprints added yet</p>
