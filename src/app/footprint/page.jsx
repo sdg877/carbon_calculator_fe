@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Modal from "../../components/Modal.jsx";
 import "../../styles/forms.css";
 
@@ -16,15 +15,6 @@ export default function CarbonFootprintForm() {
   const [suggestedOffsets, setSuggestedOffsets] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const router = useRouter();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      router.push("/identity");
-    }
-  }, [router]);
-
   const handleDetailsChange = (e) => {
     const { name, value } = e.target;
     setDetails((prevDetails) => ({ ...prevDetails, [name]: value }));
@@ -33,16 +23,14 @@ export default function CarbonFootprintForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const token = localStorage.getItem("token");
+
     setError("");
     setSuggestedOffsets([]);
     setCarbonResult(null);
 
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        router.push("/identity");
-        return;
-      }
+      if (!token) return;
 
       const res = await fetch(`${API_URL}/footprints`, {
         method: "POST",
