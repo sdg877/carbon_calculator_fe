@@ -17,7 +17,7 @@ export default function AuthWrapper({ children }) {
   const pathname = usePathname();
 
 
-  const protectedRoutes = ["/profile", "/footprint", "/dashboard"];
+  const protectedRoutes = ["/profile", "/footprint"];
 
   useEffect(() => {
     const checkAuth = () => {
