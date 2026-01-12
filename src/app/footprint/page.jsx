@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Modal from "../../components/Modal.jsx";
 import "../../styles/forms.css";
@@ -17,6 +17,13 @@ export default function CarbonFootprintForm() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/identity");
+    }
+  }, [router]);
 
   const handleDetailsChange = (e) => {
     const { name, value } = e.target;
