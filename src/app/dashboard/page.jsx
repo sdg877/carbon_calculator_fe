@@ -39,49 +39,49 @@ const DEMO_FOOTPRINTS = [
     id: 1,
     activity_type: "Commuting",
     carbon_kg: 5.5,
-    created_at: "04/09/2025",
+    created_at: "2025-09-04",
     raw_type: "commuting",
   },
   {
     id: 2,
     activity_type: "Food",
     carbon_kg: 1.2,
-    created_at: "04/09/2025",
+    created_at: "2025-09-04",
     raw_type: "food",
   },
   {
     id: 3,
     activity_type: "Energy",
     carbon_kg: 8.9,
-    created_at: "09/10/2025",
+    created_at: "2025-10-09",
     raw_type: "energy",
   },
   {
     id: 4,
     activity_type: "Transport",
     carbon_kg: 4.1,
-    created_at: "14/10/2025",
+    created_at: "2025-10-14",
     raw_type: "transport",
   },
   {
     id: 5,
     activity_type: "Food",
     carbon_kg: 2.7,
-    created_at: "14/10/2025",
+    created_at: "2025-10-14",
     raw_type: "food",
   },
   {
     id: 6,
     activity_type: "Shopping",
     carbon_kg: 15.0,
-    created_at: "19/11/2025",
+    created_at: "2025-11-19",
     raw_type: "shopping",
   },
   {
     id: 7,
     activity_type: "Flights",
     carbon_kg: 150.0,
-    created_at: "22/11/2025",
+    created_at: "2025-11-22",
     raw_type: "flights",
   },
 ];
@@ -115,17 +115,22 @@ const toTitleCase = (str) =>
   str.replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1));
 
 const getMonthStart = (dateStr) => {
-  const parts = dateStr.split("/");
-  if (parts.length !== 3)
-    return getMonthStart(new Date().toLocaleDateString("en-GB"));
-  const date = new Date(parts[2], parts[1] - 1, 1);
-  if (isNaN(date.getTime()))
-    return getMonthStart(new Date().toLocaleDateString("en-GB"));
-  const key = date.toISOString().slice(0, 10);
+  const date = new Date(dateStr);
+
+  if (isNaN(date.getTime())) {
+    return { key: "0000-00-01", display: "Unknown" };
+  }
+
+  const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}-01`;
+
   const display = date.toLocaleDateString("en-GB", {
     month: "short",
     year: "numeric",
   });
+
   return { key, display };
 };
 
@@ -164,11 +169,14 @@ export default function DashboardPage() {
         setFootprints(
           data.map((item) => {
             const mapped = mapCategory(normalise(item.activity_type));
+
+            const actualDate = item.entry_date || item.created_at;
+
             return {
               ...item,
               raw_type: mapped,
               activity_type: toTitleCase(mapped),
-              created_at: new Date(item.created_at).toLocaleDateString("en-GB"),
+              created_at: actualDate,
             };
           })
         );
