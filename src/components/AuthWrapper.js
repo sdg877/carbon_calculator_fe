@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import { useRouter, usePathname } from "next/navigation"; 
+import { useRouter, usePathname } from "next/navigation";
 
 const AuthContext = createContext();
 
@@ -12,10 +12,9 @@ export function useAuth() {
 
 export default function AuthWrapper({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
-
 
   const protectedRoutes = ["/profile", "/footprint"];
 
@@ -25,9 +24,7 @@ export default function AuthWrapper({ children }) {
 
       if (!token) {
         setIsAuthenticated(false);
-        if (protectedRoutes.includes(pathname)) {
-          router.push("/identity");
-        }
+        if (protectedRoutes.includes(pathname)) router.push("/identity");
         setLoading(false);
         return;
       }
@@ -52,7 +49,11 @@ export default function AuthWrapper({ children }) {
     };
 
     checkAuth();
-  }, [pathname, router]); 
+
+    const interval = setInterval(checkAuth, 10000);
+
+    return () => clearInterval(interval);
+  }, [pathname, router]);
 
   if (loading && protectedRoutes.includes(pathname)) {
     return <div className="loading-screen">Loading...</div>;
