@@ -59,31 +59,31 @@ const GLOBAL_AVERAGE_DATA = [
   {
     name: "Transport",
     value: 35,
-    colour: "#4D7C8A",
+    colour: "#A29BFE", 
     description: "Cars, buses, and trains",
   },
   {
     name: "Energy/Housing",
     value: 25,
-    colour: "#7465A7",
+    colour: "#74B9FF", // matches 'energy'
     description: "Heating and electricity use",
   },
   {
     name: "Food/Diet",
     value: 20,
-    colour: "#C38148",
+    colour: "#B2BEC3", 
     description: "Meat, dairy, and produce impact",
   },
   {
     name: "Shopping/Goods",
     value: 15,
-    colour: "#CD5B68",
+    colour: "#636E72", 
     description: "Purchases and consumption",
   },
   {
     name: "Other/Waste",
     value: 5,
-    colour: "#5F5F5F",
+    colour: "#ADD8E6", 
     description: "Waste and miscellaneous",
   },
 ];
