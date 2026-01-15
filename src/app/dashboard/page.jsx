@@ -30,8 +30,8 @@ const CATEGORY_COLOURS = {
   food: "#B2BEC3",
   shopping: "#636E72",
   housing: "#D1D8E0",
-  waste: "#CED6E0",
-  other: "#F1F2F6",
+  waste: "	#ADD8E6",
+  other: "#8FBC8F",
 };
 
 const DEMO_FOOTPRINTS = [
