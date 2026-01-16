@@ -30,7 +30,7 @@ const CATEGORY_COLOURS = {
   food: "#B2BEC3",
   shopping: "#636E72",
   housing: "#D1D8E0",
-  waste: "	#ADD8E6",
+  waste: "#ADD8E6",
   other: "#8FBC8F",
 };
 
@@ -99,7 +99,8 @@ const mapCategory = (raw) => {
     key.includes("transport") ||
     key.includes("car") ||
     key.includes("bus") ||
-    key.includes("train")
+    key.includes("train") ||
+    key.includes("tube")
   )
     return "transport";
   if (key.includes("energy") || key.includes("electricity")) return "energy";
@@ -116,21 +117,15 @@ const toTitleCase = (str) =>
 
 const getMonthStart = (dateStr) => {
   const date = new Date(dateStr);
-
-  if (isNaN(date.getTime())) {
-    return { key: "0000-00-01", display: "Unknown" };
-  }
-
+  if (isNaN(date.getTime())) return { key: "0000-00-01", display: "Unknown" };
   const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
     2,
     "0"
   )}-01`;
-
   const display = date.toLocaleDateString("en-GB", {
     month: "short",
     year: "numeric",
   });
-
   return { key, display };
 };
 
@@ -161,7 +156,7 @@ export default function DashboardPage() {
         return;
       }
       try {
-        const res = await fetch(`${API_URL}/footprints`, {
+        const res = await fetch(`${API_URL}/footprints/self`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error("Failed");
@@ -169,14 +164,12 @@ export default function DashboardPage() {
         setFootprints(
           data.map((item) => {
             const mapped = mapCategory(normalise(item.activity_type));
-
-            const actualDate = item.entry_date || item.created_at;
-
+            const displayDate = item.entry_date || item.created_at;
             return {
               ...item,
               raw_type: mapped,
               activity_type: toTitleCase(mapped),
-              created_at: actualDate,
+              display_date: displayDate,
             };
           })
         );
@@ -205,7 +198,7 @@ export default function DashboardPage() {
   const aggregatedByMonth = useMemo(() => {
     const monthlyMap = {};
     footprints.forEach((row) => {
-      const { key, display } = getMonthStart(row.created_at);
+      const { key, display } = getMonthStart(row.display_date);
       if (!monthlyMap[key])
         monthlyMap[key] = { month_start: display, carbon_kg: 0, raw_date: key };
       monthlyMap[key].carbon_kg += Number(row.carbon_kg) || 0;
@@ -221,21 +214,18 @@ export default function DashboardPage() {
         <h1 className="dashboard-title">
           My Carbon Dashboard{isDemoMode ? " (Demo)" : ""}
         </h1>
-
         {isDemoMode && (
           <p className="demo-message">
             Viewing Demo Data: Log in to track your personal footprint.
           </p>
         )}
+        {error && <p className="error">{error}</p>}
 
         {footprints.length > 0 ? (
           <div className="dashboard-grid">
             <div className="chart-card">
               <h2>By Activity</h2>
-              <ResponsiveContainer
-                width="100%"
-                height={isMobile ? 280 : "100%"}
-              >
+              <ResponsiveContainer width="100%" height={isMobile ? 280 : 350}>
                 <PieChart>
                   <Pie
                     data={aggregatedByCategory}
