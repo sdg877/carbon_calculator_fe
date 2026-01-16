@@ -8,49 +8,38 @@ async function fetchEnvironmentalNews() {
   const API_KEY = process.env.NEXT_PUBLIC_NEWS_API_KEY;
 
   if (!API_KEY) {
-    console.error("News API key is missing. Check your .env.local file.");
+    console.error("News API key is missing.");
     return [];
   }
 
-  const relevantQuery =
-    "carbon footprint OR climate change OR renewable energy OR recycling OR pollution";
+  const relevantQuery = '+"climate change" OR +"carbon emissions" OR +"sustainability"';
 
   const excludeDomains = [
-    "dailymail.co.uk",
-    "foxnews.com",
-    "tmz.com",
-    "bbc.co.uk",
-    "telegraph.co.uk",
-    "theguardian.com",
-    "independent.co.uk",
-    "mirror.co.uk",
-    "cnn.com",
-    "nbcnews.com",
+    "dailymail.co.uk", "foxnews.com", "tmz.com", "bbc.co.uk",
+    "telegraph.co.uk", "theguardian.com", "independent.co.uk",
+    "mirror.co.uk", "cnn.com", "nbcnews.com",
   ].join(",");
 
-  const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
-    relevantQuery
-  )}&language=en&sortBy=publishedAt&pageSize=20&apiKey=${API_KEY}&excludeDomains=${excludeDomains}`;
+  const url = `https://newsapi.org/v2/everything?` +
+              `q=${encodeURIComponent(relevantQuery)}` +
+              `&searchIn=title` +
+              `&language=en` +
+              `&sortBy=relevancy` +
+              `&excludeDomains=${excludeDomains}` +
+              `&pageSize=12` +
+              `&apiKey=${API_KEY}`;
 
   try {
     const response = await fetch(url);
-    if (!response.ok) {
-      console.error(`API call failed with status: ${response.status}`);
-      return [];
-    }
+    if (!response.ok) return [];
+    
     const data = await response.json();
 
-    const filteredArticles = data.articles.filter(
-      (article) =>
-        article.title &&
-        article.urlToImage &&
-        !article.urlToImage.includes("logo") &&
-        !article.urlToImage.includes("placeholder")
-    );
-
-    return filteredArticles.slice(0, 8);
+    return (data.articles || [])
+      .filter(article => article.title && article.urlToImage)
+      .slice(0, 8);
   } catch (error) {
-    console.error("Error fetching news:", error);
+    console.error("Error:", error);
     return [];
   }
 }
@@ -65,7 +54,7 @@ const GLOBAL_AVERAGE_DATA = [
   {
     name: "Energy/Housing",
     value: 25,
-    colour: "#74B9FF", // matches 'energy'
+    colour: "#74B9FF", 
     description: "Heating and electricity use",
   },
   {
