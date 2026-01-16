@@ -320,7 +320,7 @@ export default function DashboardPage() {
             <p style={{ textAlign: "center" }}>
               No data yet. Go to{" "}
               <Link
-                href="/activity"
+                href="/footprint"
                 style={{
                   color: "#cd5b68",
                   fontWeight: "bold",
