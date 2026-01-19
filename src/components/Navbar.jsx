@@ -59,7 +59,7 @@ export default function Navbar() {
   return (
     <nav className={`navbar ${isMenuOpen ? "open" : ""}`}>
       <div className="navbar-logo">
-        <Link href="/">CarbonCalc</Link>
+        <Link href="/">Carbon Cut</Link>
       </div>
 
       <button
@@ -96,7 +96,6 @@ export default function Navbar() {
           </li>
         )}
 
-        {/* Profile Link: Only show if NOT on the profile page */}
         {currentPath !== "/profile" && (
           <li>
             <Link href="/profile" onClick={handleLinkClick}>
