@@ -7,7 +7,7 @@ import ModalRoot from "../components/ModalRoot.jsx";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "CarbonCalc - Track Your Footprint",
+  title: "Carbon Cut",
   description:
     "A simple application for tracking and offsetting your carbon footprint.",
 };
