@@ -7,7 +7,8 @@
   border: 1px solid #f9bdbd;
   font-size: 0.9rem;
   text-align: center;
-  width: 75%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .success {
@@ -173,7 +174,7 @@
 
 .carbon-form label {
   margin-bottom: 6px;
-  margin-left: 15px;
+  margin-left: 0;
   font-weight: 600;
   color: #34495e;
   font-size: 0.95rem;
@@ -181,13 +182,14 @@
 
 .carbon-form input[type="number"],
 .carbon-form select {
-  margin-left: 15px;
-  width: 75%;
+  margin-left: 0;
+  width: 100%;
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
   background-color: #fff;
+  box-sizing: border-box;
 }
 
 .carbon-form input:focus,
@@ -204,6 +206,8 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .carbon-form fieldset legend {
@@ -222,7 +226,7 @@
   font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
-  width: 50%;
+  width: 100%;
   margin: 10px auto 0 auto;
   display: block;
 }
