@@ -6,6 +6,7 @@
   min-height: 100vh;
   font-family: var(--font-dm-sans, sans-serif);
   color: #333;
+  box-sizing: border-box;
 }
 
 .landingTitle {
@@ -42,10 +43,6 @@
   text-align: center;
 }
 
-.communityStat {
-  text-align: center;
-}
-
 .mainContentSection {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -54,6 +51,7 @@
 }
 
 .communityStat {
+  text-align: center;
   padding: 0.8rem;
   margin-bottom: 1.5rem;
   background-color: #ecf0f1;
@@ -69,7 +67,7 @@
 
 .ctaButton {
   display: block;
-  width: 75%;
+  width: 100%;
   padding: 1rem;
   background-color: #cd5b68;
   color: #fff;
@@ -242,6 +240,12 @@
   color: #38606b;
 }
 
+@media (min-width: 601px) {
+  .ctaButton {
+    width: 75%;
+  }
+}
+
 @media (max-width: 1400px) {
   .newsGrid {
     grid-template-columns: repeat(4, 1fr);
@@ -264,6 +268,10 @@
 }
 
 @media (max-width: 600px) {
+  .landingContainer {
+    min-height: auto;
+    padding: 1rem;
+  }
   .landingTitle {
     font-size: 2rem;
   }
@@ -276,32 +284,11 @@
   .newsFeedCard {
     padding: 1.5rem;
   }
-  .chartAndKeyWrapper {
-    flex-direction: column;
-    align-items: center;
-  }
-  .chartKeyList {
-    width: 100%;
-    text-align: center;
-  }
   .chartKeyItem {
-    margin: 0.4rem auto;
     justify-content: center;
-  }
-  .chartArea {
-    width: 100%;
   }
   .newsGrid {
     grid-template-columns: 1fr;
     gap: 0.5rem;
-  }
-  .newsItem {
-    padding: 0;
-  }
-  .newsImage {
-    height: 100px;
-  }
-  .newsContent {
-    padding: 0.6rem;
   }
 }
