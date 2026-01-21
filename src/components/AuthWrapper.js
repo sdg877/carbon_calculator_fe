@@ -21,10 +21,11 @@ export default function AuthWrapper({ children }) {
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem("token");
+      const loginUrl = `/identity?redirect=${encodeURIComponent(pathname)}`;
 
       if (!token) {
         setIsAuthenticated(false);
-        if (protectedRoutes.includes(pathname)) router.push("/identity");
+        if (protectedRoutes.includes(pathname)) router.push(loginUrl);
         setLoading(false);
         return;
       }
@@ -36,14 +37,14 @@ export default function AuthWrapper({ children }) {
         if (isExpired) {
           localStorage.removeItem("token");
           setIsAuthenticated(false);
-          if (protectedRoutes.includes(pathname)) router.push("/identity");
+          if (protectedRoutes.includes(pathname)) router.push(loginUrl);
         } else {
           setIsAuthenticated(true);
         }
       } catch (err) {
         localStorage.removeItem("token");
         setIsAuthenticated(false);
-        if (protectedRoutes.includes(pathname)) router.push("/identity");
+        if (protectedRoutes.includes(pathname)) router.push(loginUrl);
       }
       setLoading(false);
     };
