@@ -3,6 +3,7 @@ import "../styles/globals.css";
 import AuthWrapper from "../components/AuthWrapper.js";
 import Navbar from "../components/Navbar.jsx";
 import ModalRoot from "../components/ModalRoot.jsx";
+import Footer from "../components/Footer.jsx";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
         <AuthWrapper>
           <Navbar />
           <main className="main-content">{children}</main>
+          <Footer />
         </AuthWrapper>
         <ModalRoot />
       </body>
