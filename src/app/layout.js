@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import "../styles/globals.css";
 import AuthWrapper from "../components/AuthWrapper.js";
 import Navbar from "../components/Navbar.jsx";
-import ModalRoot from "../components/ModalRoot.jsx";
+import ModalRoot from "../components/Modal.jsx";
 import Footer from "../components/Footer.jsx";
 
 const inter = Inter({ subsets: ["latin"] });
