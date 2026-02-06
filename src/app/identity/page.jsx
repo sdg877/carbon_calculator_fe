@@ -16,6 +16,7 @@ function AuthContent() {
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerError, setRegisterError] = useState("");
   const [registerSuccess, setRegisterSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -149,8 +150,8 @@ function AuthContent() {
                 required
               />
             </div>
-            <button type="submit" className="ctaButton">
-              Login
+            <button type="submit" className="ctaButton" disabled={isLoading}>
+              {isLoading ? "Please wait..." : isLogin ? "Login" : "Register"}
             </button>
             <div className="toggleContainer">
               <p className="paragraph">Don't have an account?</p>
