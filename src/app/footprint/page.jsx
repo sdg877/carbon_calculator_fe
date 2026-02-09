@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Modal } from '@/components';
-import "../../styles/forms.css";
+import "@/styles/forms.css";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
