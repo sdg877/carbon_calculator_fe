@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useMemo, useCallback } from "react";
 import Link from "next/link";
-import "../../styles/dashboard.css";
+import "@/styles/dashboard.css";
 import {
   PieChart,
   Pie,
