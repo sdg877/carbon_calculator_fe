@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import styles from "../styles/homepage.module.css";
+import styles from "@/styles/homepage.module.css";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 const GLOBAL_AVERAGE_DATA = [
