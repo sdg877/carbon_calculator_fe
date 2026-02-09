@@ -1,7 +1,7 @@
 
 "use client";
 import { useState, useEffect } from "react";
-import "../../styles/profile.css";
+import "@/styles/profile.css";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
