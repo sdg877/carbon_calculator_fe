@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Modal from "../../components/Modal.jsx";
+import { Modal } from '@/components';
 import "../../styles/forms.css";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
