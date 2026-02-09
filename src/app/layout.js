@@ -1,9 +1,6 @@
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
-import AuthWrapper from "../components/AuthWrapper.js";
-import Navbar from "../components/Navbar.jsx";
-import ModalRoot from "../components/Modal.jsx";
-import Footer from "../components/Footer.jsx";
+import { Navbar, Footer, AuthWrapper } from '@/components';
 
 const inter = Inter({ subsets: ["latin"] });
 
