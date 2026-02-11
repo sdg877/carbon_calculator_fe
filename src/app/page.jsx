@@ -57,28 +57,53 @@ export default function HomePage() {
   const [newsArticles, setNewsArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   async function loadNews() {
+  //     const API_KEY = process.env.NEXT_PUBLIC_NEWS_API_KEY;
+  //     if (!API_KEY) {
+  //       setIsLoading(false);
+  //       return;
+  //     }
+  //     const query = encodeURIComponent(
+  //       '+"climate change" OR +"carbon emissions" OR +"sustainability"',
+  //     );
+  //     const exclude =
+  //       "dailymail.co.uk,foxnews.com,tmz.com,bbc.co.uk,telegraph.co.uk,theguardian.com,independent.co.uk,mirror.co.uk,cnn.com,nbcnews.com";
+
+  //     try {
+  //       const response = await fetch(
+  //         `https://newsapi.org/v2/everything?q=${query}&searchIn=title&language=en&sortBy=relevancy&excludeDomains=${exclude}&pageSize=8&apiKey=${API_KEY}`,
+  //       );
+  //       if (!response.ok) throw new Error();
+  //       const data = await response.json();
+  //       setNewsArticles(data.articles || []);
+  //     } catch (error) {
+  //       console.error("News load failed");
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+  //   loadNews();
+  // }, []);
+
+useEffect(() => {
     async function loadNews() {
-      const API_KEY = process.env.NEXT_PUBLIC_NEWS_API_KEY;
-      if (!API_KEY) {
+      // Points to your Render backend route we just created
+      const backendUrl = process.env.NEXT_PUBLIC_API_URL;
+      
+      if (!backendUrl) {
         setIsLoading(false);
         return;
       }
-      const query = encodeURIComponent(
-        '+"climate change" OR +"carbon emissions" OR +"sustainability"',
-      );
-      const exclude =
-        "dailymail.co.uk,foxnews.com,tmz.com,bbc.co.uk,telegraph.co.uk,theguardian.com,independent.co.uk,mirror.co.uk,cnn.com,nbcnews.com";
 
       try {
-        const response = await fetch(
-          `https://newsapi.org/v2/everything?q=${query}&searchIn=title&language=en&sortBy=relevancy&excludeDomains=${exclude}&pageSize=8&apiKey=${API_KEY}`,
-        );
-        if (!response.ok) throw new Error();
+        const response = await fetch(`${backendUrl}/api/news`);
+        if (!response.ok) throw new Error("Backend response not ok");
+        
         const data = await response.json();
         setNewsArticles(data.articles || []);
       } catch (error) {
-        console.error("News load failed");
+        console.error("News load failed:", error);
       } finally {
         setIsLoading(false);
       }
