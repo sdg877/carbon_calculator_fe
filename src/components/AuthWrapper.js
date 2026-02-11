@@ -54,6 +54,8 @@ export default function AuthWrapper({ children }) {
     const interval = setInterval(checkAuth, 10000);
 
     return () => clearInterval(interval);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, router]);
 
   if (loading && protectedRoutes.includes(pathname)) {
