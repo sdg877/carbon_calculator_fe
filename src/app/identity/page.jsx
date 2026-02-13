@@ -123,10 +123,9 @@ function AuthContent() {
   return (
     <div className="authContainer">
       <div className="authCard">
-        <h1 className="authTitle">CarbonCalc</h1>
         {isLogin ? (
           <form onSubmit={handleLogin} className="authForm loginForm">
-            <h2 className="cardTitle">Login to Your Account</h2>
+            <h2 className="cardTitle">Login</h2>
             {loginError && <p className="error">{loginError}</p>}
             <div className="formGroup">
               <label htmlFor="loginEmail">Email:</label>
