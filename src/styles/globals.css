@@ -16,7 +16,7 @@ body {
 }
 
 .main-content {
-  min-height: calc(100dvh - 60px);
+  min-height: auto;
   display: flex;
   flex-direction: column;
   overflow: visible;
