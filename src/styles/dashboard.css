@@ -1,23 +1,31 @@
-.dashboard-page {
-  background-color: #f0f2f5;
-  box-sizing: border-box;
-  padding: 1rem 2rem;
-  height: calc(100vh - 60px); 
-  max-height: calc(100vh - 60px);
-  overflow: hidden !important;
-  display: flex;
-  flex-direction: column;
-}
-
 .dashboard-container {
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
-  height: 90%;
+  height: auto;
+  min-height: 80vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  padding-top: 2rem;
+}
+
+.dashboard-page {
+  background-color: #f0f2f5;
+  min-height: 100vh;
+  height: auto;
+  overflow-y: auto !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-title {
+  margin-bottom: 2rem;
+  z-index: 10;
+  font-size: 1.6rem;
+  color: #2c3e50;
+  text-align: center;
+  font-weight: 700;
 }
 
 .dashboard-grid {
@@ -41,21 +49,6 @@
   flex-direction: column;
 }
 
-.dashboard-title {
-  font-size: 1.6rem;
-  margin: 0 0 1rem 0;
-  color: #2c3e50;
-  text-align: center;
-  font-weight: 700;
-}
-
-.chart-card h2 {
-  margin-bottom: 0.2rem;
-  font-size: 1.1rem;
-  color: #34495e;
-  text-align: center;
-}
-
 .chart-card h2 {
   margin-bottom: 0.5rem;
   font-size: 1.2rem;
@@ -68,6 +61,96 @@
   padding-bottom: 15px;
 }
 
+.empty-dashboard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 70vh;
+  padding: 1rem;
+}
+
+.welcome-card {
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  max-width: 550px;
+  width: 100%;
+  border: 1px solid #f0f0f0;
+}
+
+.welcome-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.welcome-card h1 {
+  font-size: 1.6rem;
+  color: #2c3e50;
+  margin-bottom: 0.8rem;
+  font-weight: 800;
+}
+
+.welcome-card p {
+  color: #576574;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.onboarding-steps {
+  text-align: left;
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.step-number {
+  background: #eef2f3;
+  color: #4d7c8a;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.step p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #34495e;
+}
+
+.start-button {
+  display: block;
+  background: #4d7c8a;
+  color: #ffffff;
+  padding: 1rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  margin-top: 1.5rem;
+}
+
+.start-button:hover {
+  background: #3d636e;
+  transform: translateY(-2px);
+}
+
+/* --- Responsive Layouts --- */
 @media (max-width: 1023px) {
   .dashboard-page {
     height: auto;
@@ -76,5 +159,28 @@
   .dashboard-grid {
     display: flex;
     flex-direction: column;
+    padding: 0 1rem;
+  }
+  .chart-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .welcome-card {
+    padding: 1.5rem;
+    margin: 10px;
+  }
+  .welcome-card h1 {
+    font-size: 1.4rem;
+  }
+  .welcome-icon {
+    font-size: 2.5rem;
+  }
+  .onboarding-steps {
+    gap: 0.8rem;
+  }
+  .step p {
+    font-size: 0.85rem;
   }
 }
