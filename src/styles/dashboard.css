@@ -1,3 +1,4 @@
+
 .dashboard-container {
   max-width: 1400px;
   margin: 0 auto;
@@ -13,7 +14,7 @@
 .dashboard-page {
   background-color: #f0f2f5;
   min-height: 100vh;
-  height: auto;
+  height: auto; 
   overflow-y: auto !important;
   display: flex;
   flex-direction: column;
@@ -150,7 +151,6 @@
   transform: translateY(-2px);
 }
 
-/* --- Responsive Layouts --- */
 @media (max-width: 1023px) {
   .dashboard-page {
     height: auto;
@@ -171,16 +171,8 @@
     padding: 1.5rem;
     margin: 10px;
   }
-  .welcome-card h1 {
-    font-size: 1.4rem;
-  }
-  .welcome-icon {
-    font-size: 2.5rem;
-  }
-  .onboarding-steps {
-    gap: 0.8rem;
-  }
-  .step p {
-    font-size: 0.85rem;
-  }
+  .welcome-card h1 { font-size: 1.4rem; }
+  .welcome-icon { font-size: 2.5rem; }
+  .onboarding-steps { gap: 0.8rem; }
+  .step p { font-size: 0.85rem; }
 }
