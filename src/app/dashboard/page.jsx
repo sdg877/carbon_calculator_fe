@@ -158,93 +158,118 @@ export default function DashboardPage() {
     );
   }, [footprints]);
 
-  return (
+
+return (
     <div className="dashboard-page">
       <div className="dashboard-container">
-        <h1 className="dashboard-title">
-          My Carbon Dashboard {isDemoMode && "(Demo)"}
-        </h1>
-
-        {isDemoMode && (
-          <p className="demo-message">
-            Viewing demo data. Log in to see your own.
-          </p>
-        )}
-        {error && <p className="error">{error}</p>}
-
         {footprints.length > 0 ? (
-          <div className="dashboard-grid">
-            {/* Pie Chart Card */}
-            <div className="chart-card">
-              <h2>By Activity</h2>
-              <ResponsiveContainer width="100%" height={isMobile ? 280 : 350}>
-                <PieChart>
-                  <Pie
-                    data={categoryData}
-                    dataKey="carbon_kg"
-                    nameKey="activity_type"
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={isMobile ? 45 : 65}
-                    outerRadius={isMobile ? 70 : 100}
-                    stroke="none"
-                  >
-                    {categoryData.map((entry, i) => (
-                      <Cell
-                        key={i}
-                        fill={CATEGORY_COLOURS[entry.raw_type] || "#999"}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(v) => `${v.toFixed(1)} kg`} />
-                  <Legend verticalAlign="bottom" iconType="circle" />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
+          <>
+            <h1 className="dashboard-title">
+              My Carbon Dashboard {isDemoMode && "(Demo)"}
+            </h1>
 
-            {/* Line Chart Card */}
-            <div className="chart-card">
-              <h2>Monthly Total</h2>
-              <ResponsiveContainer width="100%" height={isMobile ? 280 : 350}>
-                <LineChart
-                  data={monthlyData}
-                  margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-                >
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    vertical={false}
-                    stroke="#f0f0f0"
-                  />
-                  <XAxis
-                    dataKey="month_start"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fontSize: 11 }}
-                  />
-                  <YAxis
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fontSize: 11 }}
-                  />
-                  <Tooltip
-                    formatter={(v) => [`${v.toFixed(1)} kg`, "Carbon"]}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="carbon_kg"
-                    stroke="#4d7c8a"
-                    strokeWidth={3}
-                    dot={{ r: 4 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+            {isDemoMode && (
+              <p className="demo-message">
+                Viewing demo data. Log in to see your own.
+              </p>
+            )}
+            {error && <p className="error">{error}</p>}
+
+            <div className="dashboard-grid">
+              {/* Pie Chart Card */}
+              <div className="chart-card">
+                <h2>By Activity</h2>
+                <ResponsiveContainer width="100%" height={isMobile ? 280 : 350}>
+                  <PieChart>
+                    <Pie
+                      data={categoryData}
+                      dataKey="carbon_kg"
+                      nameKey="activity_type"
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={isMobile ? 45 : 65}
+                      outerRadius={isMobile ? 70 : 100}
+                      stroke="none"
+                    >
+                      {categoryData.map((entry, i) => (
+                        <Cell
+                          key={i}
+                          fill={CATEGORY_COLOURS[entry.raw_type] || "#999"}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(v) => `${v.toFixed(1)} kg`} />
+                    <Legend verticalAlign="bottom" iconType="circle" />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Line Chart Card */}
+              <div className="chart-card">
+                <h2>Monthly Total</h2>
+                <ResponsiveContainer width="100%" height={isMobile ? 280 : 350}>
+                  <LineChart
+                    data={monthlyData}
+                    margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                  >
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      vertical={false}
+                      stroke="#f0f0f0"
+                    />
+                    <XAxis
+                      dataKey="month_start"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 11 }}
+                    />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 11 }}
+                    />
+                    <Tooltip
+                      formatter={(v) => [`${v.toFixed(1)} kg`, "Carbon"]}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="carbon_kg"
+                      stroke="#4d7c8a"
+                      strokeWidth={3}
+                      dot={{ r: 4 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
             </div>
-          </div>
+          </>
         ) : (
-          <div className="chart-card empty-state">
-            <p>
-              No data yet. <Link href="/footprint">Add Activity</Link> to begin.
-            </p>
+          /* Empty State: The title is hidden here for a cleaner look */
+          <div className="empty-dashboard-container">
+            <div className="welcome-card">
+              <div className="welcome-icon">🌱</div>
+              <h1>Welcome to your Green Journey!</h1>
+              <p>Your dashboard is ready, it just needs some data to come to life.</p>
+              
+              <div className="onboarding-steps">
+                <div className="step">
+                  <span className="step-number">1</span>
+                  <p>Track your first activity (commute, meal, or energy use).</p>
+                </div>
+                <div className="step">
+                  <span className="step-number">2</span>
+                  <p>See your footprint broken down by category.</p>
+                </div>
+                <div className="step">
+                  <span className="step-number">3</span>
+                  <p>Set goals and reduce your impact over time.</p>
+                </div>
+              </div>
+
+              <Link href="/footprint" className="start-button">
+                Track My First Activity
+              </Link>
+            </div>
           </div>
         )}
       </div>
