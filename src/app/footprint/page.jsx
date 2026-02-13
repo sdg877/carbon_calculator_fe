@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Modal } from '@/components';
+import { Modal } from "@/components";
 import "@/styles/carbon-form.css";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -76,7 +76,7 @@ export default function CarbonFootprintForm() {
     }
   };
 
-  // Helper for consistent number inputs
+
   const renderInput = (name, label) => (
     <div key={name} className="form-group">
       <label htmlFor={name}>{label}:</label>
@@ -148,27 +148,26 @@ export default function CarbonFootprintForm() {
 
           {/* Recurring Section */}
           {activityType && !["meat", "dairy"].includes(activityType) && (
-            <div
-              className="recurring-section"
-              style={{
-                background: "rgba(0,0,0,0.03)",
-                padding: "10px",
-                borderRadius: "8px",
-                margin: "15px 0",
-              }}
-            >
-              <label
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
+            <div className="recurring-section">
+              <label className="recurring-checkbox-label">
                 <input
                   type="checkbox"
                   checked={isRecurring}
                   onChange={(e) => setIsRecurring(e.target.checked)}
                 />
-                Make this a recurring activity
+                <span className="custom-checkmark"></span>
+                Recurring Acitvity?
               </label>
+
               {isRecurring && (
-                <div style={{ marginTop: "10px" }}>
+                <div
+                  style={{
+                    marginTop: "15px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "8px",
+                  }}
+                >
                   <label htmlFor="frequency">Repeat every:</label>
                   <select
                     id="frequency"
@@ -185,22 +184,27 @@ export default function CarbonFootprintForm() {
             </div>
           )}
 
-          {/* Transport Details */}
           {["driving", "train", "tube", "bus"].includes(activityType) && (
             <fieldset>
-              <legend>{activityType} Details</legend>
-              <label>Commute Type:</label>
-              <select
-                name="commute"
-                value={details.commute || ""}
-                onChange={handleDetailsChange}
-              >
-                <option value="short">Short</option>
-                <option value="medium">Medium</option>
-                <option value="long">Long</option>
-              </select>
+              <legend style={{ textTransform: "capitalize" }}>
+                {activityType.replace(/_/g, " ")} Details
+              </legend>
+
+              <div className="form-group">
+                <label>Commute Type:</label>
+                <select
+                  name="commute"
+                  value={details.commute || ""}
+                  onChange={handleDetailsChange}
+                >
+                  <option value="short">Short</option>
+                  <option value="medium">Medium</option>
+                  <option value="long">Long</option>
+                </select>
+              </div>
+
               {activityType === "driving" && (
-                <>
+                <div className="form-group">
                   <label>Fuel Type:</label>
                   <select
                     name="fuel_type"
@@ -210,7 +214,7 @@ export default function CarbonFootprintForm() {
                     <option value="petrol">Petrol</option>
                     <option value="other">Other</option>
                   </select>
-                </>
+                </div>
               )}
             </fieldset>
           )}
