@@ -153,7 +153,7 @@ function AuthContent() {
               {isLoading ? "Please wait..." : isLogin ? "Login" : "Register"}
             </button>
             <div className="toggleContainer">
-              <p className="paragraph">Don't have an account?</p>
+              <p>Don't have an account?</p>
               <button
                 type="button"
                 onClick={() => setIsLogin(false)}
