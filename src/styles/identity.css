@@ -1,0 +1,92 @@
+.authContainer {
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.authCard {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  max-width: 60%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.authTitle {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 80%;
+  align-items: center;
+}
+
+.formGroup {
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #34495e;
+}
+
+.authForm input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.ctaButton {
+  display: block;
+  width: 50%;
+  padding: 1rem;
+  background-color: #b64e5c; /* Your lovely RED as default */
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  border: none;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.ctaButton:hover {
+  background-color: #4d7c8a; /* Switches to teal on hover */
+}
+
+/* --- Mobile Fix (Form higher up, buttons 100% width) --- */
+@media (max-width: 767px) {
+  .authContainer {
+    min-height: 60vh;
+    align-items: flex-start;
+    padding-top: 2rem;
+  }
+
+  .authCard {
+    max-width: 95%;
+    padding: 1.5rem;
+  }
+
+  .authForm, .ctaButton {
+    width: 100%;
+  }
+}
