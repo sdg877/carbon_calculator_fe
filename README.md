@@ -1,5 +1,5 @@
 Brief
-I wanted to create an app that would allow users to track their carbon footprint over time. I had originally wanted to use an API to suggest volunteering opportunities for the user to offset their footprint but after a lot of research i found there wasn’t a suitable API for this so instead i decided to display environemntal news gatherered through an API on my homepage.
+I built a full-stack app to track and visualise carbon footprints. After finding no suitable volunteering APIs, I pivoted to integrating a real-time environmental news feed to provide immediate user value.
 
 Deployment Links
 Frontend GitHub - https://github.com/sdg877/carbon_calculator_fe
