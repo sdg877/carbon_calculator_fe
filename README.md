@@ -20,3 +20,12 @@ Vercel (deployment)
 Render (deployment)
 CSS
 JavaScript
+
+Code Process
+Environment Setup: Configured environment variables and established a connection between a FastAPI backend and PostgreSQL via Supabase.
+Custom Authentication: Implemented a secure, self-managed user registration and login system with password hashing and session management.
+Data Logic: Developed a calculation engine to process user inputs into carbon footprint metrics, storing historical data for trend tracking.
+Front End Development: Created a responsive React interface for data entry and visualising footprint results.
+External API Integration: Integrated NewsAPI to fetch and display a real-time environmental news feed on the dashboard.
+
+
