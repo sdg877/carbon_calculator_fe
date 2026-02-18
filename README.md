@@ -28,4 +28,7 @@ Data Logic: Developed a calculation engine to process user inputs into carbon fo
 Front End Development: Created a responsive React interface for data entry and visualising footprint results.
 External API Integration: Integrated NewsAPI to fetch and display a real-time environmental news feed on the dashboard.
 
+Challenges
+Feature Pivot: Originally designed to suggest volunteering opportunities via API. After extensive research revealed no viable production-ready APIs, I pivoted the architecture to integrate NewsAPI. This ensured the dashboard remained data-driven while providing immediate, relevant value to the user.
+Custom Authentication: Opted to build a self-managed authentication system from scratch rather than using third-party providers. This required implementing secure password hashing and session management to ensure data privacy and system integrity.
 
