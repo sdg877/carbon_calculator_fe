@@ -32,3 +32,7 @@ Challenges
 Feature Pivot: Originally designed to suggest volunteering opportunities via API. After extensive research revealed no viable production-ready APIs, I pivoted the architecture to integrate NewsAPI. This ensured the dashboard remained data-driven while providing immediate, relevant value to the user.
 Custom Authentication: Opted to build a self-managed authentication system from scratch rather than using third-party providers. This required implementing secure password hashing and session management to ensure data privacy and system integrity.
 
+Wins
+Data Visualisation: Implemented interactive charts for the first time to transform raw carbon data into clear, actionable visual trends.
+Technical Pivot: Successfully re-engineered the application’s core value proposition by integrating a real-time news API when original data sources proved unreliable.
+Full-Stack Ownership: Built the entire ecosystem from scratch, including a custom secure authentication layer and a managed PostgreSQL database.
