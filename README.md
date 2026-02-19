@@ -36,3 +36,9 @@ Wins
 Data Visualisation: Implemented interactive charts for the first time to transform raw carbon data into clear, actionable visual trends.
 Technical Pivot: Successfully re-engineered the application’s core value proposition by integrating a real-time news API when original data sources proved unreliable.
 Full-Stack Ownership: Built the entire ecosystem from scratch, including a custom secure authentication layer and a managed PostgreSQL database.
+
+Key Learnings
+Agile Pivoting: Learnt to re-evaluate project requirements mid-development when external dependencies (APIs) failed to meet production standards.
+Data Visualisation: Gained experience in translating raw backend metrics into user-friendly visual charts to improve data literacy.
+Security Fundamentals: Deepened understanding of web security by building a custom authentication flow rather than relying on third-party libraries.
+State Management: Mastered handling complex user data across a React frontend and FastAPI backend to ensure a seamless UX.
