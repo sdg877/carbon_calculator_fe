@@ -3,9 +3,10 @@ Brief
 I built a full-stack app to track and visualise carbon footprints. After finding no suitable volunteering APIs, I pivoted to integrating a real-time environmental news feed to provide immediate user value.
 
 Deployment Links
-
 Frontend GitHub - https://github.com/sdg877/carbon_calculator_fe
+
 Backend GitHub - https://github.com/sdg877/carbon_calculator_be
+
 Deployed Site - https://carbon-calculator-fe-pi.vercel.app/
 
 Timeframe
@@ -23,6 +24,7 @@ Vercel (deployment)
 Render (deployment)
 CSS
 JavaScript
+
 
 Code Process
 
