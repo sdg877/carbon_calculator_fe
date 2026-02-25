@@ -1,63 +1,74 @@
 Brief
 
-I built a full-stack app to track and visualise carbon footprints. After finding no suitable volunteering APIs, I pivoted to integrating a real-time environmental news feed to provide immediate user value. 
+A production-ready React dashboard that calculates, visualises, and contextualises personal carbon impact in real time. It features a complex, dynamic calculation form, interactive data visualisations via Recharts, and a curated environmental news feed.
+
 
 Deployment Links
 
 Frontend GitHub - https://github.com/sdg877/carbon_calculator_fe
-
-Backend GitHub - https://github.com/sdg877/carbon_calculator_be
-
 Deployed Site - https://carbon-calculator-fe-pi.vercel.app/
+
 
 Timeframe
 
 Developed iteratively over six months. Started as a personal challenge during injury recovery, evolving from a prototype into a production-standard full-stack application
 
 Technologies Used
-React
-FastAPI
-Python
-PostgreSQL
-Supabase
-NewsAPI
-Vercel (deployment)
-Render (deployment)
-CSS
-JavaScript
+
+Library: React
+
+State/Logic: JavaScript (ES6+), Hooks
+
+Charts: Recharts (Pie & Trend Analysis)
+
+Styling: CSS3 (Custom Modules)
+
+Deployment: Vercel
 
 
 Code Process
 
-Environment Setup: Configured environment variables and established a connection between a FastAPI backend and PostgreSQL via Supabase.
+Dynamic Form Logic: Created a conditional form system that dynamically updates inputs and validation depending on activity category. Supports 20+ activity types while keeping state predictable and payloads structured.
 
-Custom Authentication: Implemented a secure, self-managed user registration and login system with password hashing and session management.
+Data Visualisation: Implemented Recharts to transform raw backend data into interactive Pie charts for global and personal comparisons.
 
-Data Logic: Developed a calculation engine to process user inputs into carbon footprint metrics, storing historical data for trend tracking.
+Content Sanitisation: Engineered a refined fetch logic for NewsAPI using Boolean search operators and domain exclusion to filter out holiday adverts and tabloids.
 
-Front End Development: Created a responsive React interface for data entry and visualising footprint results using charts.
+State Management: Utilised a centralised state for form details to ensure clean, unified JSON payloads for the API.
 
-External API Integration: Integrated NewsAPI to fetch and display a real-time environmental news feed on the dashboard.
 
 Challenges
 
-Feature Pivot: Originally designed to suggest volunteering opportunities via API. After extensive research revealed no viable production-ready APIs, I pivoted the architecture to integrate NewsAPI. This ensured the dashboard remained data-driven while providing immediate, relevant value to the user.
-Custom Authentication: Opted to build a self-managed authentication system from scratch rather than using third-party providers. This required implementing secure password hashing and session management to ensure data privacy and system integrity.
+Data Noise: Overcame NewsAPI noise by implementing strict domain filtering and mandatory keyword matching to ensure article relevancy.
+
+Conditional UI: Managing complex state transitions within the carbon form to hide/show fields dynamically without breaking the user flow.
+
 
 Wins
 
-Data Visualisation: Implemented interactive charts for the first time to transform raw carbon data into clear, actionable visual trends.
+UX Precision: Successfully created a form that handles 20+ distinct activity types within a single, intuitive interface.
 
-Technical Pivot: Successfully re-engineered the application’s core value proposition by integrating a real-time news API when original data sources proved unreliable.
+Curation Logic: Built a robust news engine that provides high-quality, relevant data to the dashboard.
 
-Full-Stack Ownership: Built the entire ecosystem from scratch, including a custom secure authentication layer and a managed PostgreSQL database.
 
 Key Learnings
 
-Agile Pivoting: Learnt to re-evaluate project requirements mid-development when external dependencies (APIs) failed to meet production standards.
+Data Presentation: Mastered the translation of complex database metrics into user-friendly visual insights.
 
-Data Visualisation: Gained experience in translating raw backend metrics into user-friendly visual charts to improve data literacy.
+Asynchronous UX: Improved knowledge of handling loading states and error handling for external API integrations.
 
-Security Fundamentals: Deepened understanding of web security by building a custom authentication flow rather than relying on third-party libraries.
 
-State Management: Mastered handling complex user data across a React frontend and FastAPI backend to ensure a seamless UX.
+Bugs
+
+Hydration Sync: Occasional delays in syncing chart data with updated form submissions (currently being optimised).
+
+Image Fallbacks: Some NewsAPI articles occasionally return broken image links.
+
+
+Future Improvements
+
+Advanced Analytics: Migrating to D3.js for deeper, multi-variable data visualisations.
+
+Personalisation: Implementing a Personal Goal tracker based on the global average data.
+
+
