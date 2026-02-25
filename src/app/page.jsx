@@ -42,7 +42,6 @@ export default function HomePage() {
       }
 
       try {
-        // This will wait indefinitely for Render to wake up
         const response = await fetch(`${backendUrl}/api/news`);
         if (!response.ok) throw new Error("Backend response not ok");
 
