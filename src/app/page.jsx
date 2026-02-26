@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "@/styles/homepage.module.css";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
 
 const GLOBAL_AVERAGE_DATA = [
   { name: "Transport", value: 35, colour: "#A29BFE" },
@@ -35,18 +35,15 @@ export default function HomePage() {
   useEffect(() => {
     async function loadNews() {
       const backendUrl = process.env.NEXT_PUBLIC_API_URL;
-
       if (!backendUrl) {
         setIsLoading(false);
         return;
       }
-
       try {
         const response = await fetch(`${backendUrl}/api/news`);
         if (!response.ok) throw new Error("Backend response not ok");
-
         const data = await response.json();
-        setNewsArticles(data.articles || []);
+        setNewsArticles(data.articles?.slice(0, 8) || []);
       } catch (error) {
         console.error("News load failed:", error);
         setNewsArticles([]);
@@ -88,7 +85,7 @@ export default function HomePage() {
           <h2 className={styles.cardTitle}>Global Average Breakdown</h2>
           <div className={styles.chartAndKeyWrapper}>
             <div className={styles.chartArea}>
-              <ResponsiveContainer width="100%" height={200}>
+              <ResponsiveContainer width="100%" height={320}>
                 <PieChart>
                   <Pie
                     data={GLOBAL_AVERAGE_DATA}
@@ -98,11 +95,23 @@ export default function HomePage() {
                     cy="50%"
                     outerRadius={80}
                     innerRadius={40}
+                    label={false}
                   >
                     {GLOBAL_AVERAGE_DATA.map((entry, i) => (
                       <Cell key={i} fill={entry.colour} />
                     ))}
                   </Pie>
+                  <Tooltip />
+                  <Legend 
+                    verticalAlign="bottom" 
+                    align="center"
+                    iconType="circle"
+                    formatter={(value, entry) => (
+                      <span style={{ color: '#333', marginRight: '10px', fontSize: '14px' }}>
+                        {value}: {entry.payload.value}%
+                      </span>
+                    )}
+                  />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -113,13 +122,10 @@ export default function HomePage() {
       <section className={styles.newsFeedSection}>
         <div className={styles.newsFeedCard}>
           <h3 className={styles.cardTitle}>Environmental News</h3>
-
           {isLoading ? (
             <div className={styles.loaderContainer}>
               <div className={styles.loadingSpinner}></div>
-              <p className={styles.loadingText}>
-                Fetching news from server (this may take a moment)...
-              </p>
+              <p className={styles.loadingText}>Fetching news...</p>
             </div>
           ) : (
             <div className={styles.newsGrid}>
@@ -140,12 +146,9 @@ export default function HomePage() {
                       />
                     )}
                     <div className={styles.newsContent}>
-                      <p className={styles.newsTitle}>
-                        {cleanTitle(article.title)}
-                      </p>
+                      <p className={styles.newsTitle}>{cleanTitle(article.title)}</p>
                       <p className={styles.newsSource}>
-                        {article.source.name} |{" "}
-                        {formatPublishedAt(article.publishedAt)}
+                        {article.source.name} | {formatPublishedAt(article.publishedAt)}
                       </p>
                     </div>
                   </div>
