@@ -76,7 +76,6 @@ export default function CarbonFootprintForm() {
     }
   };
 
-
   const renderInput = (name, label) => (
     <div key={name} className="form-group">
       <label htmlFor={name}>{label}:</label>
@@ -119,7 +118,7 @@ export default function CarbonFootprintForm() {
           <select
             id="activity-type"
             value={activityType}
-            onChange={(e) => setActivityType(e.target.value)}
+            onChange={(e) => { setActivityType(e.target.value); setDetails({}); setIsRecurring(false); }}
             required
           >
             <option value="">Select an activity</option>
@@ -147,7 +146,7 @@ export default function CarbonFootprintForm() {
           </select>
 
           {/* Recurring Section */}
-          {activityType && !["meat", "dairy"].includes(activityType) && (
+          {activityType && !["meat", "dairy", "food_waste", "clothing", "electronics"].includes(activityType) && (
             <div className="recurring-section">
               <label className="recurring-checkbox-label">
                 <input
@@ -156,7 +155,7 @@ export default function CarbonFootprintForm() {
                   onChange={(e) => setIsRecurring(e.target.checked)}
                 />
                 <span className="custom-checkmark"></span>
-                Recurring Acitvity?
+                Recurring Activity?
               </label>
 
               {isRecurring && (
@@ -274,6 +273,58 @@ export default function CarbonFootprintForm() {
             </fieldset>
           )}
 
+          {/* Food waste */}
+          {activityType === "food_waste" && (
+            <fieldset>
+              <legend>Food Waste</legend>
+              <label>How often do you throw away food?</label>
+              <select
+                name="frequency"
+                value={details.frequency || ""}
+                onChange={handleDetailsChange}
+              >
+                <option value="weekly">Weekly</option>
+                <option value="rare">Rarely</option>
+              </select>
+            </fieldset>
+          )}
+
+          {/* Clothing */}
+          {activityType === "clothing" && (
+            <fieldset>
+              <legend>Clothing</legend>
+              <label>How often do you buy clothes?</label>
+              <select
+                name="frequency"
+                value={details.frequency || ""}
+                onChange={handleDetailsChange}
+              >
+                <option value="monthly">Monthly</option>
+                <option value="weekly">Weekly</option>
+              </select>
+            </fieldset>
+          )}
+
+          {/* Electronics */}
+          {activityType === "electronics" && (
+            <fieldset>
+              <legend>Electronics</legend>
+              <label>How often do you buy electronics?</label>
+              <select
+                name="frequency"
+                value={details.frequency || ""}
+                onChange={handleDetailsChange}
+              >
+                <option value="rare">Rarely</option>
+                <option value="frequent">Frequently</option>
+              </select>
+            </fieldset>
+          )}
+
+          {activityType === "recycling" &&
+            renderInput("percent", "Percentage Recycled")}
+          {activityType === "events" &&
+            renderInput("per_year", "Events per Year")}
           {/* Shopping */}
           {activityType === "online_shopping" && (
             <fieldset>
