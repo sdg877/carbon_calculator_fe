@@ -14,7 +14,7 @@ const GLOBAL_AVERAGE_DATA = [
 
 const formatNumber = (num) => num.toLocaleString("en-GB");
 const TOTAL_COMMUNITY_CO2 = 125000;
-const AUTH_PAGE_PATH = "/auth/login";
+const AUTH_PAGE_PATH = "/identity";
 
 const cleanTitle = (title) =>
   title.replace(/\*\*/g, "").replace(/""/g, '"').trim();
