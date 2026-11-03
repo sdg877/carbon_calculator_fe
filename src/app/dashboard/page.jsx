@@ -17,7 +17,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-// --- Configuration & Constants ---
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const CATEGORY_COLOURS = {
@@ -45,7 +44,14 @@ const DEMO_DATA = [
   { id: 7, carbon_kg: 150.0, created_at: "2025-11-22", raw_type: "flights" },
 ];
 
-// --- Helper Functions ---
+const DEMO_GLOBAL_AVG = [
+  { created_at: "2025-09-04", carbon_kg: 9.4 },
+  { created_at: "2025-10-09", carbon_kg: 11.2 },
+  { created_at: "2025-10-14", carbon_kg: 8.6 },
+  { created_at: "2025-11-19", carbon_kg: 12.1 },
+  { created_at: "2025-11-22", carbon_kg: 10.3 },
+];
+
 const toTitleCase = (str) =>
   str.replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1));
 
@@ -73,14 +79,21 @@ const getMonthLabel = (dateStr) => {
   };
 };
 
-// --- Main Component ---
+const toDayKey = (dateStr) => String(dateStr || "").slice(0, 10);
+
+const formatDayLabel = (dayKey) => {
+  const date = new Date(dayKey);
+  if (isNaN(date.getTime())) return dayKey;
+  return date.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+};
+
 export default function DashboardPage() {
   const [footprints, setFootprints] = useState([]);
+  const [globalAverages, setGlobalAverages] = useState([]);
   const [error, setError] = useState("");
   const [isDemoMode, setIsDemoMode] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Responsive Check
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -88,7 +101,6 @@ export default function DashboardPage() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Data Fetching
   const loadData = useCallback(async () => {
     const token = localStorage.getItem("token");
 
@@ -101,13 +113,14 @@ export default function DashboardPage() {
           activity_type: toTitleCase(d.raw_type),
         })),
       );
+      setGlobalAverages(DEMO_GLOBAL_AVG);
       return;
     }
 
+    const headers = { Authorization: `Bearer ${token}` };
+
     try {
-      const res = await fetch(`${API_URL}/footprints/self`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(`${API_URL}/footprints/self`, { headers });
       if (!res.ok) throw new Error();
       const data = await res.json();
 
@@ -125,13 +138,19 @@ export default function DashboardPage() {
     } catch {
       setError("Could not load your data.");
     }
+
+    try {
+      const avgRes = await fetch(`${API_URL}/footprints/all`, { headers });
+      if (avgRes.ok) {
+        setGlobalAverages(await avgRes.json());
+      }
+    } catch {}
   }, []);
 
   useEffect(() => {
     loadData();
   }, [loadData]);
 
-  // Data Processing
   const categoryData = useMemo(() => {
     const totals = {};
     footprints.forEach((fp) => {
@@ -158,8 +177,29 @@ export default function DashboardPage() {
     );
   }, [footprints]);
 
+  const comparisonData = useMemo(() => {
+    const days = {};
 
-return (
+    footprints.forEach((fp) => {
+      const key = toDayKey(fp.display_date);
+      if (!key) return;
+      if (!days[key]) days[key] = { day: key, you: 0, global: null };
+      days[key].you += Number(fp.carbon_kg) || 0;
+    });
+
+    globalAverages.forEach((row) => {
+      const key = toDayKey(row.entry_date || row.created_at);
+      if (!key) return;
+      if (!days[key]) days[key] = { day: key, you: null, global: null };
+      days[key].global = Number(row.carbon_kg) || 0;
+    });
+
+    return Object.values(days)
+      .sort((a, b) => a.day.localeCompare(b.day))
+      .map((d) => ({ ...d, label: formatDayLabel(d.day) }));
+  }, [footprints, globalAverages]);
+
+  return (
     <div className="dashboard-page">
       <div className="dashboard-container">
         {footprints.length > 0 ? (
@@ -176,7 +216,6 @@ return (
             {error && <p className="error">{error}</p>}
 
             <div className="dashboard-grid">
-              {/* Pie Chart Card */}
               <div className="chart-card">
                 <h2>By Activity</h2>
                 <ResponsiveContainer width="100%" height={isMobile ? 280 : 350}>
@@ -204,7 +243,6 @@ return (
                 </ResponsiveContainer>
               </div>
 
-              {/* Line Chart Card */}
               <div className="chart-card">
                 <h2>Monthly Total</h2>
                 <ResponsiveContainer width="100%" height={isMobile ? 280 : 350}>
@@ -241,20 +279,82 @@ return (
                   </LineChart>
                 </ResponsiveContainer>
               </div>
+
+              {globalAverages.length > 0 && (
+                <div className="chart-card" style={{ gridColumn: "1 / -1" }}>
+                  <h2>You vs Global Average (Daily)</h2>
+                  <ResponsiveContainer
+                    width="100%"
+                    height={isMobile ? 280 : 350}
+                  >
+                    <LineChart
+                      data={comparisonData}
+                      margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                    >
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        vertical={false}
+                        stroke="#f0f0f0"
+                      />
+                      <XAxis
+                        dataKey="label"
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{ fontSize: 11 }}
+                      />
+                      <YAxis
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{ fontSize: 11 }}
+                      />
+                      <Tooltip
+                        formatter={(v, name) => [
+                          `${Number(v).toFixed(1)} kg`,
+                          name,
+                        ]}
+                      />
+                      <Legend verticalAlign="bottom" iconType="circle" />
+                      <Line
+                        type="monotone"
+                        dataKey="you"
+                        name="You"
+                        stroke="#4d7c8a"
+                        strokeWidth={3}
+                        dot={{ r: 4 }}
+                        connectNulls
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="global"
+                        name="Global average"
+                        stroke="#A29BFE"
+                        strokeWidth={2}
+                        strokeDasharray="5 5"
+                        dot={{ r: 3 }}
+                        connectNulls
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
             </div>
           </>
         ) : (
-          /* Empty State: The title is hidden here for a cleaner look */
           <div className="empty-dashboard-container">
             <div className="welcome-card">
               <div className="welcome-icon">🌱</div>
               <h1>Welcome to your Green Journey!</h1>
-              <p>Your dashboard is ready, it just needs some data to come to life.</p>
-              
+              <p>
+                Your dashboard is ready, it just needs some data to come to
+                life.
+              </p>
+
               <div className="onboarding-steps">
                 <div className="step">
                   <span className="step-number">1</span>
-                  <p>Track your first activity (commute, meal, or energy use).</p>
+                  <p>
+                    Track your first activity (commute, meal, or energy use).
+                  </p>
                 </div>
                 <div className="step">
                   <span className="step-number">2</span>
